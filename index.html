@@ -1131,11 +1131,16 @@ const SHEET_ID = '1JkbHuzNIqgBpLE7kNGu_YYYpvwJEZpn_UUjAhZNuI1Y';
 const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=`;
 const TODAY = new Date().getDate();
 const CURRENT_MONTH = new Date().getMonth() + 1;
-const MONTHS_CONFIG = {
-  4: {name: '4 月', year: 2026, days: 30, startWeekday: 2}, // 2026/4/1 = Wed (index 2 in Mon-based)
-  5: {name: '5 月', year: 2026, days: 31, startWeekday: 4}, // 2026/5/1 = Fri
-  6: {name: '6 月', year: 2026, days: 30, startWeekday: 0}  // 2026/6/1 = Mon
-};
+const MONTHS_CONFIG = (function() {
+  const cfg = {};
+  for (let m = 1; m <= 12; m++) {
+    const d = new Date(2026, m - 1, 1);
+    const lastDay = new Date(2026, m, 0).getDate();
+    const wd = (d.getDay() + 6) % 7; // Mon-based: 0=Mon, 6=Sun
+    cfg[m] = {name: m + ' 月', year: 2026, days: lastDay, startWeekday: wd};
+  }
+  return cfg;
+})();
 
 // *** 把你部署的 Apps Script 網址貼在這裡 ***
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKmthPDQr60-Db94v0Xf6g811FS5qDO7EJWVn8K0XDH2AS0IqiIVY_8Hfs5qk6iSf8Pg/exec';
@@ -1158,12 +1163,18 @@ let lifeTodos = {};  // {day: [{text, done}]}
 let customTasks = {}; // {monthDay: [{text, brand, done}]} e.g. {'4_3': [{text:'寫文案', brand:'zy', done:false}]}
 let monthGoals = []; // [{id, title, brand, month, steps: [{text, day, done}]}]
 let yearGoals = []; // [{id, title, brand, steps: [{text, month, day, done}]}]
-let selectedCalMonth = 4; // 行事曆目前顯示月份
-let selectedDayMonth = 4; // 每日任務目前顯示月份
+let selectedCalMonth = CURRENT_MONTH; // 行事曆目前顯示月份
+let selectedDayMonth = CURRENT_MONTH; // 每日任務目前顯示月份
 let lastFetch = null;
 
-// === EVENTS DATA (from Google Calendar .ics) ===
-const aprilEvents = {
+// === GOOGLE CALENDAR 連動 ===
+const CALENDAR_IDS = {
+  personal: 'hannahchen6134@gmail.com',       // 青青
+  zy: 'anterichaos@gmail.com'                  // 智堯
+};
+
+// 行事曆事件資料（從 Google Calendar 即時載入，硬寫資料作為備用）
+const aprilEventsFallback = {
   1: [{name: 'Tera 聊聊瑪雅曆 19:50', type: 'event'}],
   3: [{name: 'LINE 發打卡開跑通知', type: 'task'}],
   4: [{name: '價值觀羅盤線上說明會 20:00', type: 'event'}, {name: '完成打卡公告文案細修', type: 'task'}],
@@ -1186,12 +1197,53 @@ const aprilEvents = {
   25: [{name: '阿偉財商一日工作坊', type: 'event'}]
 };
 
-// Multi-month events
-const monthEvents = {
-  4: aprilEvents,
-  5: {}, // 五月活動待新增
-  6: {}  // 六月活動待新增
-};
+let calendarLoaded = false;
+const monthEvents = { 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}, 10: {}, 11: {}, 12: {} };
+
+async function loadCalendarEvents(month) {
+  if (!APPS_SCRIPT_URL) return;
+  try {
+    const year = 2026;
+    const res = await fetch(APPS_SCRIPT_URL + '?action=getCalendarEvents&month=' + month + '&year=' + year);
+    const data = await res.json();
+    if (data && !data.error && data.events) {
+      monthEvents[month] = {};
+      data.events.forEach(ev => {
+        const day = ev.day;
+        if (!monthEvents[month][day]) monthEvents[month][day] = [];
+        monthEvents[month][day].push({
+          name: ev.title + (ev.time ? ' ' + ev.time : ''),
+          type: ev.allDay ? 'event' : 'event',
+          brand: ev.calendar || '',
+          calendarSource: ev.calendar
+        });
+      });
+      calendarLoaded = true;
+      console.log('✅ 已載入 ' + month + ' 月行事曆事件', monthEvents[month]);
+    }
+  } catch(e) {
+    console.warn('行事曆載入失敗，使用備用資料:', e);
+    if (month === 4 && Object.keys(monthEvents[4]).length === 0) {
+      Object.assign(monthEvents[4], aprilEventsFallback);
+    }
+  }
+}
+
+// 載入目前月份 ± 1 個月的事件
+async function loadAllCalendarEvents() {
+  const months = [CURRENT_MONTH];
+  if (CURRENT_MONTH > 1) months.push(CURRENT_MONTH - 1);
+  if (CURRENT_MONTH < 12) months.push(CURRENT_MONTH + 1);
+  await Promise.all(months.map(m => loadCalendarEvents(m)));
+  // 載入完成後重新渲染
+  // 重新渲染目前顯示的頁面
+  try { renderCalendar(); } catch(e) {}
+  try { renderCalMonthNav(); } catch(e) {}
+  try {
+    const activeTab = document.querySelector('.nav-tab.active');
+    if (activeTab && activeTab.dataset.section === 'daily') showDay(TODAY, CURRENT_MONTH);
+  } catch(e) {}
+}
 
 const monthPrep = { 4: null, 5: {}, 6: {} };
 const monthIG = { 4: null, 5: {}, 6: {} };
@@ -1238,8 +1290,10 @@ function getWeekday(month, day) {
 
 // Get events for any month
 function getEventsForDay(month, day) {
-  if (month === 4) return aprilEvents[day] || [];
-  return (monthEvents[month] && monthEvents[month][day]) || [];
+  const events = (monthEvents[month] && monthEvents[month][day]) || [];
+  // 如果還沒從 Calendar 載入且是四月，用備用資料
+  if (!calendarLoaded && month === 4 && events.length === 0) return aprilEventsFallback[day] || [];
+  return events;
 }
 function getPrepForDay(month, day) {
   if (month === 4) return dailyPrep[day] || [];
@@ -1343,6 +1397,9 @@ async function loadTaskChecks() {
     } catch(e) { console.warn('Apps Script fetch failed, using localStorage'); }
   }
   autoCarryTasks();
+
+  // 載入 Google Calendar 事件
+  loadAllCalendarEvents();
 }
 
 function syncToCloud(key, value) {
@@ -1434,7 +1491,7 @@ function autoCarryTasks() {
   // Check if yesterday's tasks are done, carry undone to today
   const yPrep = dailyPrep[yesterday] || [];
   const yIG = dailyIG[yesterday] || [];
-  const yEvents = (aprilEvents[yesterday] || []).filter(e => e.type !== 'ongoing');
+  const yEvents = (aprilEventsFallback[yesterday] || []).filter(e => e.type !== 'ongoing');
 
   let carried = JSON.parse(localStorage.getItem('carriedTasks') || '{}');
   if (carried._lastCheck === TODAY) return; // Already checked today
@@ -2054,8 +2111,8 @@ function renderOverview() {
   let cards = '';
 
   // 初星群 card (always visible)
-  const aprilEventCount = Object.keys(aprilEvents).reduce((sum, k) => {
-    return sum + aprilEvents[k].filter(e => e.type === 'event' || e.type === 'milestone').length;
+  const aprilEventCount = Object.keys(aprilEventsFallback).reduce((sum, k) => {
+    return sum + aprilEventsFallback[k].filter(e => e.type === 'event' || e.type === 'milestone').length;
   }, 0);
   cards += `
     <div class="brand-card star">
@@ -2127,11 +2184,11 @@ function renderOverview() {
 function renderCalMonthNav() {
   const nav = document.getElementById('calMonthNav');
   if (!nav) return;
-  const months = [4,5,6];
-  const curIdx = months.indexOf(selectedCalMonth);
-  let html = `<button class="month-arrow" style="opacity:${curIdx>0?'1':'0.3'};cursor:${curIdx>0?'pointer':'default'}" onclick="if(${curIdx}>0){selectedCalMonth=${months[Math.max(curIdx-1,0)]};renderCalMonthNav();renderCalendar();}">‹</button>`;
+  const canPrev = selectedCalMonth > 1;
+  const canNext = selectedCalMonth < 12;
+  let html = `<button class="month-arrow" style="opacity:${canPrev?'1':'0.3'};cursor:${canPrev?'pointer':'default'}" onclick="if(selectedCalMonth>1){selectedCalMonth--;renderCalMonthNav();renderCalendar();}">‹</button>`;
   html += `<div class="month-label"><span>2026 年 ${selectedCalMonth} 月</span></div>`;
-  html += `<button class="month-arrow" style="opacity:${curIdx<months.length-1?'1':'0.3'};cursor:${curIdx<months.length-1?'pointer':'default'}" onclick="if(${curIdx}<${months.length-1}){selectedCalMonth=${months[Math.min(curIdx+1,months.length-1)]};renderCalMonthNav();renderCalendar();}">›</button>`;
+  html += `<button class="month-arrow" style="opacity:${canNext?'1':'0.3'};cursor:${canNext?'pointer':'default'}" onclick="if(selectedCalMonth<12){selectedCalMonth++;renderCalMonthNav();renderCalendar();}">›</button>`;
   nav.innerHTML = html;
 }
 
@@ -2181,7 +2238,14 @@ function renderCalendar() {
       events.forEach(e => {
         if (e.type === 'ongoing') return;
         const ev = document.createElement('div');
-        ev.className = 'cal-event event-special';
+        // 根據來源行事曆顯示不同顏色
+        if (e.calendarSource === 'zy' || e.brand === 'zy') {
+          ev.className = 'cal-event zy';
+        } else if (e.calendarSource === 'personal' || e.brand === 'personal') {
+          ev.className = 'cal-event personal';
+        } else {
+          ev.className = 'cal-event event-special';
+        }
         ev.textContent = e.name.split(' ')[0];
         ev.title = e.name;
         eventsDiv.appendChild(ev);
@@ -2719,7 +2783,7 @@ function renderSummary() {
   for (let day = 1; day <= totalDays; day++) {
     const ig = dailyIG[day] || [];
     const prep = dailyPrep[day] || [];
-    const ev = (aprilEvents[day] || []).filter(e => e.type !== 'ongoing');
+    const ev = (aprilEventsFallback[day] || []).filter(e => e.type !== 'ongoing');
 
     // 智堯 tasks: threads + zy IG/LINE
     const zyKeys = [`${day}_zy_threads`];
@@ -2902,6 +2966,7 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById('sec-' + tab.dataset.section).classList.add('active');
     document.getElementById('navTabs').classList.remove('open');
+    if (tab.dataset.section === 'calendar') { renderCalMonthNav(); renderCalendar(); }
     if (tab.dataset.section === 'summary') renderSummary();
     if (tab.dataset.section === 'goals') renderGoals();
   });
