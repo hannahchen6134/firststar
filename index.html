@@ -164,7 +164,7 @@ body {
 .mobile-nav-toggle span:nth-child(3) { top: 21px; }
 
 /* MAIN */
-.main { max-width: 1200px; margin: 0 auto; padding: 32px 24px; position: relative; z-index: 1; }
+.main { max-width: 1200px; margin: 0 auto; padding: 32px 24px; position: relative; z-index: 1; overflow-x: hidden; box-sizing: border-box; }
 .section { display: none; animation: fadeIn 0.6s cubic-bezier(0.22,1,0.36,1); }
 .section.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
@@ -270,7 +270,7 @@ body {
 .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--text-mid); }
 .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; width: 100%; overflow: hidden; }
 .cal-header-cell { text-align: center; padding: 8px 4px; font-size: 0.8rem; font-weight: 500; color: var(--text-light); }
 .cal-cell {
   min-height: 90px; padding: 6px; border-radius: 6px;
@@ -634,21 +634,38 @@ body {
   .nav-brand { font-size: 0.95rem; }
   .nav-brand::after { font-size: 0.55rem; margin-left: 5px; }
   .mode-toggle { padding: 5px 10px; font-size: 0.68rem; }
-  .brand-cards { grid-template-columns: 1fr; }
-  .cal-cell { min-height: 56px; padding: 4px; }
-  .cal-date { font-size: 0.72rem; }
-  .cal-event { font-size: 0.55rem; padding: 1px 3px; }
+  /* 總覽卡片 */
+  .brand-cards { grid-template-columns: 1fr; gap: 14px; margin-bottom: 20px; }
+  .brand-card { padding: 18px; }
+  .brand-card-header { margin-bottom: 12px; }
+  .brand-stats { gap: 10px; }
+  .brand-stat-value { font-size: 1.3rem; }
+  .brand-stat-label { font-size: 0.68rem; }
+  /* 行事曆 */
+  .calendar-container { padding: 14px; margin-bottom: 20px; overflow-x: auto; }
+  .calendar-month { font-size: 1rem; }
+  .calendar-legend { gap: 10px; }
+  .legend-item { font-size: 0.7rem; }
+  .cal-grid { gap: 1px; }
+  .cal-header-cell { font-size: 0.68rem; padding: 6px 2px; }
+  .cal-cell { min-height: 52px; padding: 3px; }
+  .cal-date { font-size: 0.68rem; }
+  .cal-event { font-size: 0.5rem; padding: 1px 2px; }
   .sop-container { padding: 16px; }
+  /* 標題 */
   .section-title { font-size: 1.05rem; margin-bottom: 2px; }
   .section-desc { font-size: 0.72rem; margin-bottom: 12px; }
-  .main { padding: 16px 20px; }
-  .calendar-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  /* 主容器 — 足夠的左右留白 */
+  .main { padding: 16px 28px; }
+  .calendar-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  /* 每日任務日期選擇器 */
   .day-btn { font-size: 0.75rem; width: 36px; height: 36px; min-width: unset; min-height: unset; margin: 1px auto; }
   .day-grid-wrap { padding: 16px; border-radius: 14px; }
   .day-grid-header span { font-size: 0.7rem; }
   .day-date { font-size: 1.1rem; }
   .day-weekday { font-size: 0.78rem; }
   .day-badge { padding: 2px 8px; font-size: 0.65rem; }
+  /* 任務卡片 */
   .day-card { padding: 16px; margin-bottom: 10px; border-radius: 12px; }
   .day-card-title { font-size: 0.82rem; font-weight: 600; margin-bottom: 8px; padding-bottom: 8px; gap: 8px; letter-spacing: 0.04em; }
   .day-card-title::before { width: 3px; height: 14px; }
@@ -667,13 +684,21 @@ body {
   .goal-new-input { flex: 1 1 100%; }
   .goal-brand-select { flex: 1; }
   .goal-small-btn.add { flex-shrink: 0; }
+  /* 月報統計 */
+  .summary-stats { gap: 10px; }
+  .summary-stat { padding: 14px 10px; }
+  .summary-stat-value { font-size: 1.3rem; }
+  .summary-stat-label { font-size: 0.65rem; }
 }
 @media (max-width: 420px) {
   .brand-stats { grid-template-columns: 1fr; }
-  .cal-cell { min-height: 48px; }
+  .cal-cell { min-height: 44px; padding: 2px; }
   .cal-event { display: none; }
   .cal-status-dots { display: flex !important; }
-  .main { padding: 14px 16px; }
+  .cal-header-cell { font-size: 0.62rem; }
+  .cal-date { font-size: 0.62rem; }
+  .calendar-container { padding: 10px; }
+  .main { padding: 14px 24px; }
   .day-card { padding: 14px; }
   .day-btn { width: 32px; height: 32px; font-size: 0.7rem; }
   .day-date { font-size: 1rem; }
@@ -682,6 +707,7 @@ body {
   .task-check-label { font-size: 0.75rem; }
   .section-title { font-size: 0.95rem; }
   .nav-brand { font-size: 0.88rem; }
+  .brand-card { padding: 14px; }
 }
 
 /* MONTH NAV */
@@ -1422,9 +1448,8 @@ function saveNote(key, value) {
     if (dayMatch) {
       const day = parseInt(dayMatch[1]);
       const taskTotal = getTaskTimeTotal(day);
-      const brandTotal = getDayTotal(day);
       const el = document.getElementById('taskTimeTotalDisplay');
-      if (el) el.textContent = (taskTotal + brandTotal) + ' 分鐘';
+      if (el) el.textContent = taskTotal;
     }
   }
 }
@@ -2621,22 +2646,14 @@ function showDay(day, month) {
   html += '</div>';
   } // end if viewMode !== 'zy'
 
-  // === 今日時間總計 ===
+  // === 今日時間總計（自動從任務分鐘匯總）===
   const taskTimeTotal = getTaskTimeTotal(day);
-  const zyTime = getTime(day, 'zy'), pTime = getTime(day, 'personal'), starTime = getTime(day, 'star');
-  const dayTotal = getDayTotal(day);
-  const grandTotal = taskTimeTotal + dayTotal;
-  const tis = 'width:52px;padding:4px 6px;border:1px solid var(--border);border-radius:6px;font-size:0.8rem;font-weight:600;text-align:center;font-family:inherit;color:var(--text-dark);background:var(--bg);outline:none;-moz-appearance:textfield;';
   html += '<div class="day-card" style="padding:16px;">';
-  html += `<div style="font-size:0.82rem;font-weight:600;color:var(--text-dark);margin-bottom:10px;">今日花費 <span id="taskTimeTotalDisplay" style="font-weight:400;color:var(--text-light);">${grandTotal} 分鐘</span></div>`;
-  if (taskTimeTotal > 0) {
-    html += `<div style="font-size:0.72rem;color:var(--text-light);margin-bottom:8px;">任務填寫 ${taskTimeTotal} 分鐘 + 品牌 ${dayTotal} 分鐘</div>`;
+  html += `<div style="font-size:0.82rem;font-weight:600;color:var(--text-dark);">今日花費 <span id="taskTimeTotalDisplay" style="font-weight:700;color:var(--star-primary);font-size:1rem;">${taskTimeTotal}</span> <span style="font-weight:400;color:var(--text-light);">分鐘</span></div>`;
+  if (taskTimeTotal === 0) {
+    html += `<div style="font-size:0.72rem;color:var(--text-light);margin-top:4px;">在每個任務旁填寫花費分鐘，會自動加總</div>`;
   }
-  html += '<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;">';
-  if (viewMode !== 'private') html += `<div style="display:flex;align-items:center;gap:5px;"><span class="brand-dot zy"></span><input type="number" min="0" max="999" value="${zyTime||''}" placeholder="0" class="task-time-input" style="${tis}" onchange="saveTimeSpent(${day},'zy',this.value?parseInt(this.value):0)"><span style="font-size:0.72rem;color:var(--text-light);">分</span></div>`;
-  if (viewMode !== 'zy') html += `<div style="display:flex;align-items:center;gap:5px;"><span class="brand-dot personal"></span><input type="number" min="0" max="999" value="${pTime||''}" placeholder="0" class="task-time-input" style="${tis}" onchange="saveTimeSpent(${day},'personal',this.value?parseInt(this.value):0)"><span style="font-size:0.72rem;color:var(--text-light);">分</span></div>`;
-  html += `<div style="display:flex;align-items:center;gap:5px;"><span class="brand-dot star"></span><input type="number" min="0" max="999" value="${starTime||''}" placeholder="0" class="task-time-input" style="${tis}" onchange="saveTimeSpent(${day},'star',this.value?parseInt(this.value):0)"><span style="font-size:0.72rem;color:var(--text-light);">分</span></div>`;
-  html += '</div></div>';
+  html += '</div>';
 
   html += '</div>';
   document.getElementById('dayContent').innerHTML = html;
