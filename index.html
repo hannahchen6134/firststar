@@ -1154,6 +1154,7 @@ const MONTHS_CONFIG = (function() {
 
 // *** 把你部署的 Apps Script 網址貼在這裡 ***
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKmthPDQr60-Db94v0Xf6g811FS5qDO7EJWVn8K0XDH2AS0IqiIVY_8Hfs5qk6iSf8Pg/exec';
+const API_TOKEN = 'qingqing2026star';
 
 // === STATE ===
 // viewMode: 'team' (all), 'private' (青青), 'zy' (智堯)
@@ -1214,7 +1215,7 @@ async function loadCalendarEvents(month) {
   if (!APPS_SCRIPT_URL) return;
   try {
     const year = 2026;
-    const res = await fetch(APPS_SCRIPT_URL + '?action=getCalendarEvents&month=' + month + '&year=' + year);
+    const res = await fetch(APPS_SCRIPT_URL + '?action=getCalendarEvents&month=' + month + '&year=' + year + '&token=' + API_TOKEN);
     const data = await res.json();
     if (data && !data.error && data.events) {
       monthEvents[month] = {};
@@ -1350,7 +1351,7 @@ async function fetchSheetData() {
     sheetData = [];
     for (let i = 2; i < rows.length; i++) {
       const r = rows[i];
-      if (!r[0] || r[0] === '���成統計') continue;
+      if (!r[0] || r[0] === '完成統計') continue;
       const dayNum = parseInt(r[0].replace(CURRENT_MONTH + '/', ''));
       if (isNaN(dayNum)) continue;
       sheetData.push({
@@ -1387,8 +1388,8 @@ async function loadTaskChecks() {
   if (APPS_SCRIPT_URL) {
     try {
       const [tasksRes, dataRes] = await Promise.all([
-        fetch(APPS_SCRIPT_URL + '?action=getTasks'),
-        fetch(APPS_SCRIPT_URL + '?action=getData')
+        fetch(APPS_SCRIPT_URL + '?action=getTasks&token=' + API_TOKEN),
+        fetch(APPS_SCRIPT_URL + '?action=getData&token=' + API_TOKEN)
       ]);
       const tasks = await tasksRes.json();
       const cloudData = await dataRes.json();
@@ -1417,7 +1418,7 @@ function syncToCloud(key, value) {
   fetch(APPS_SCRIPT_URL, {
     method: 'POST', mode: 'no-cors',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({action: 'saveData', key: key, value: value})
+    body: JSON.stringify({action: 'saveData', key: key, value: value, token: API_TOKEN})
   }).catch(e => console.warn('Cloud sync failed:', e));
 }
 
@@ -1426,7 +1427,7 @@ function syncToCalendar(title, brand, month, day) {
   fetch(APPS_SCRIPT_URL, {
     method: 'POST', mode: 'no-cors',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({action: 'createCalendarEvent', title, brand, year: 2026, month, day})
+    body: JSON.stringify({action: 'createCalendarEvent', title, brand, year: 2026, month, day, token: API_TOKEN})
   }).catch(e => console.warn('Calendar sync failed:', e));
 }
 
@@ -1445,7 +1446,7 @@ async function toggleTaskCheck(key, el) {
       await fetch(APPS_SCRIPT_URL, {
         method: 'POST', mode: 'no-cors',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({action: 'toggle', key: key, value: newVal})
+        body: JSON.stringify({action: 'toggle', key: key, value: newVal, token: API_TOKEN})
       });
     } catch(e) { console.warn('Sync failed:', e); }
   }
@@ -2431,7 +2432,7 @@ function handleCheck(el) {
     fetch(APPS_SCRIPT_URL, {
       method: 'POST', mode: 'no-cors',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({action: 'toggle', key, value: val, label, brand, day: dayNum})
+      body: JSON.stringify({action: 'toggle', key, value: val, label, brand, day: dayNum, token: API_TOKEN})
     }).catch(() => {});
   }
   // Update header counter
