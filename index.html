@@ -276,7 +276,7 @@ body {
 .cal-cell {
   min-height: 90px; padding: 6px; border-radius: 6px;
   background: var(--bg); transition: all 0.3s ease;
-  cursor: pointer; position: relative; min-width: 0;
+  cursor: pointer; position: relative; min-width: 0; overflow: hidden;
 }
 .cal-cell:hover { background: rgba(184,146,74,0.06); }
 .cal-cell.empty { background: transparent; cursor: default; }
@@ -517,35 +517,45 @@ body {
 .task-check {
   display: flex; align-items: center; gap: 12px; padding: 12px;
   margin: 0; cursor: pointer; transition: all 0.3s ease; border-radius: 8px;
+  -webkit-tap-highlight-color: transparent;
 }
 .task-check:hover { background: rgba(184,146,74,0.04); transform: translateX(2px); }
 .task-check.done .task-check-label { text-decoration: line-through; color: var(--text-light); }
 .task-check input[type="checkbox"] {
-  width: 20px; height: 20px; flex-shrink: 0; cursor: pointer;
-  accent-color: var(--star-primary);
-  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+  -webkit-appearance: none; appearance: none;
+  width: 22px; height: 22px; flex-shrink: 0; cursor: pointer;
+  min-width: 22px; min-height: 22px;
+  border: 2px solid rgba(184,146,74,0.35); border-radius: 6px;
+  background: white; position: relative;
+  transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
 }
 .task-check input[type="checkbox"]:checked {
-  transform: scale(1.2);
+  background: var(--star-primary); border-color: var(--star-primary);
+  transform: scale(1.1);
   animation: checkBounce 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.task-check input[type="checkbox"]:checked::after {
+  content: '✓'; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); color: white;
+  font-size: 14px; font-weight: 700; line-height: 1;
 }
 @keyframes checkBounce {
   0% { transform: scale(0.8); }
-  50% { transform: scale(1.3); }
-  100% { transform: scale(1.2); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1.1); }
 }
 .task-check.done {
-  opacity: 0.4;
+  opacity: 0.55;
   animation: taskFadeOut 0.4s ease;
 }
 @keyframes taskFadeOut {
   0% { opacity: 1; }
-  100% { opacity: 0.4; }
+  100% { opacity: 0.55; }
 }
-.task-check input.zy-accent { accent-color: var(--zy-primary); }
-.task-check input.personal-accent { accent-color: var(--personal-primary); }
-.task-check input.life-accent { accent-color: var(--life-primary); }
-.task-check-label { font-size: 0.88rem; line-height: 1.5; flex: 1; font-weight: 500; }
+.task-check input.zy-accent:checked { background: var(--zy-primary); border-color: var(--zy-primary); }
+.task-check input.personal-accent:checked { background: var(--personal-primary); border-color: var(--personal-primary); }
+.task-check input.life-accent:checked { background: var(--life-primary); border-color: var(--life-primary); }
+.task-check-label { font-size: 0.88rem; line-height: 1.5; flex: 1; font-weight: 500; display: block; }
 .task-check-wrap {
   margin-bottom: 0; padding-bottom: 0;
   border-bottom: 1px solid rgba(184,146,74,0.06);
@@ -584,7 +594,7 @@ body {
 
 /* LIFE TODOS */
 .brand-dot.life { background: var(--life-primary); }
-.life-input-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.life-input-row { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
 .life-input {
   flex: 1; padding: 10px 14px; border: 1.5px solid var(--life-border);
   border-radius: 10px; font-family: 'Noto Sans TC', sans-serif; font-size: 0.88rem;
@@ -643,7 +653,7 @@ body {
   .brand-stat-value { font-size: 1.3rem; }
   .brand-stat-label { font-size: 0.68rem; }
   /* 行事曆 */
-  .calendar-container { padding: 14px; margin-bottom: 20px; overflow-x: auto; }
+  .calendar-container { padding: 14px; margin-bottom: 20px; overflow: hidden; }
   .calendar-month { font-size: 1rem; }
   .calendar-legend { gap: 10px; }
   .legend-item { font-size: 0.7rem; }
@@ -657,7 +667,7 @@ body {
   .section-title { font-size: 1.05rem; margin-bottom: 2px; }
   .section-desc { font-size: 0.72rem; margin-bottom: 12px; }
   /* 主容器 — 足夠的左右留白 */
-  .main { padding: 16px 28px; }
+  .main { padding: 16px 18px; }
   .calendar-header { flex-direction: column; align-items: flex-start; gap: 10px; }
   /* 每日任務日期選擇器 */
   .day-btn { font-size: 0.75rem; width: 36px; height: 36px; min-width: unset; min-height: unset; margin: 1px auto; }
@@ -671,12 +681,14 @@ body {
   .day-card-title { font-size: 0.82rem; font-weight: 600; margin-bottom: 8px; padding-bottom: 8px; gap: 8px; letter-spacing: 0.04em; }
   .day-card-title::before { width: 3px; height: 14px; }
   .task-check { padding: 8px 4px; gap: 10px; }
-  .task-check input[type="checkbox"] { width: 17px; height: 17px; }
+  .task-check input[type="checkbox"] { width: 22px; height: 22px; min-width: 22px; min-height: 22px; }
   .task-check-label { font-size: 0.78rem; font-weight: 400; }
   .task-meta { padding: 0px 4px 10px 34px; gap: 6px; }
   .task-time-input { width: 40px; padding: 3px 4px; font-size: 0.7rem; }
   .task-time-label { font-size: 0.65rem; }
   .task-note { font-size: 0.7rem; padding: 5px 8px; }
+  .add-task-area { padding: 14px !important; }
+  .life-add-btn { padding: 8px 14px; font-size: 0.82rem; }
   .month-label { font-size: 0.82rem; padding: 5px 16px; }
   .month-nav-btn { font-size: 0.9rem; padding: 4px 10px; }
   .progress-track { height: 5px; }
@@ -698,8 +710,8 @@ body {
   .cal-status-dots { display: flex !important; }
   .cal-header-cell { font-size: 0.62rem; }
   .cal-date { font-size: 0.62rem; }
-  .calendar-container { padding: 10px; }
-  .main { padding: 14px 24px; }
+  .calendar-container { padding: 8px; overflow: hidden; }
+  .main { padding: 14px 14px; }
   .day-card { padding: 14px; }
   .day-btn { width: 32px; height: 32px; font-size: 0.7rem; }
   .day-date { font-size: 1rem; }
@@ -792,6 +804,22 @@ body {
   display: flex; align-items: center; gap: 10px;
   padding: 8px 0; border-bottom: 1px solid rgba(184,146,74,0.06);
   font-size: 0.85rem;
+}
+.goal-step input[type="checkbox"] {
+  -webkit-appearance: none; appearance: none;
+  width: 20px !important; height: 20px !important; flex-shrink: 0; cursor: pointer;
+  border: 2px solid rgba(184,146,74,0.35); border-radius: 6px;
+  background: white; position: relative;
+  transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+}
+.goal-step input[type="checkbox"]:checked {
+  background: var(--star-primary); border-color: var(--star-primary);
+  transform: scale(1.1);
+}
+.goal-step input[type="checkbox"]:checked::after {
+  content: '✓'; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); color: white;
+  font-size: 13px; font-weight: 700; line-height: 1;
 }
 .goal-step:last-child { border-bottom: none; }
 .goal-step-day {
@@ -2299,7 +2327,7 @@ function taskCheckHTML(key, label, brandClass, showNote) {
   let html = `<div class="task-check-wrap">
     <label class="task-check${checked ? ' done' : ''}">
       <input type="checkbox" class="${accentClass}" data-key="${key}" data-label="${label.replace(/"/g,'&quot;')}" data-brand="${brandClass === 'zy-check' ? '智堯' : brandClass === 'personal-check' ? '青青' : brandClass === 'life-check' ? '生活' : '初星群'}" ${checked ? 'checked' : ''} onchange="handleCheck(this)">
-      <div class="task-check-label">${label}</div>
+      <span class="task-check-label">${label}</span>
     </label>`;
   if (showNote) {
     const note = taskNotes[key] || '';
@@ -2468,7 +2496,7 @@ function showDay(day, month) {
       h += `<div class="task-check-wrap" style="display:flex;align-items:center;">
         <label class="task-check${ct.done ? ' done' : ''}" style="flex:1;">
           <input type="checkbox" ${ct.done ? 'checked' : ''} onchange="toggleCustomTask(${day},${month},${realIdx});this.closest('.task-check').classList.toggle('done',this.checked)">
-          <div class="task-check-label">${escapeHtml(ct.text)}<span style="color:var(--text-light);font-size:0.7rem;margin-left:6px;">自訂</span></div>
+          <span class="task-check-label">${escapeHtml(ct.text)}<span style="color:var(--text-light);font-size:0.7rem;margin-left:6px;">自訂</span></span>
         </label>
         <button onclick="if(confirm('確定刪除這個任務？'))removeCustomTask(${day},${month},${realIdx})" style="background:none;border:none;color:#D32F2F;cursor:pointer;font-size:0.85rem;padding:6px 10px;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'" title="刪除任務">&times;</button>
       </div>`;
@@ -2616,7 +2644,7 @@ function showDay(day, month) {
       const brandColors = {star: 'var(--star-primary)', zy: 'var(--zy-primary)', personal: 'var(--personal-primary)', life: 'var(--life-primary)'};
       html += `<div class="task-check-wrap"><label class="task-check${s.done ? ' done' : ''}">
         <input type="checkbox" ${s.done ? 'checked' : ''} onchange="toggleGoalStep(${s.goalId},${s.stepIdx});this.closest('.task-check').classList.toggle('done',this.checked)">
-        <div class="task-check-label"><span style="color:${brandColors[s.brand] || 'var(--text-light)'};font-size:0.72rem;font-weight:600;">${escapeHtml(s.goalTitle)}</span><br>${escapeHtml(s.text)}</div>
+        <span class="task-check-label"><span style="color:${brandColors[s.brand] || 'var(--text-light)'};font-size:0.72rem;font-weight:600;">${escapeHtml(s.goalTitle)}</span><br>${escapeHtml(s.text)}</span>
       </label></div>`;
     });
     html += '</div>';
@@ -2637,7 +2665,7 @@ function showDay(day, month) {
       html += `<div class="task-check-wrap" style="display:flex;align-items:center;">
         <label class="task-check${todo.done ? ' done' : ''}" style="flex:1;">
           <input type="checkbox" class="life-accent" ${todo.done ? 'checked' : ''} onchange="toggleLifeTodo(${day},${i});this.closest('.task-check').classList.toggle('done',this.checked)">
-          <div class="task-check-label">${escapeHtml(todo.text)}</div>
+          <span class="task-check-label">${escapeHtml(todo.text)}</span>
         </label>
         <button onclick="removeLifeTodo(${day},${i})" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:0.75rem;padding:4px 8px;opacity:0.5;">&times;</button>
       </div>`;
