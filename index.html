@@ -3066,6 +3066,30 @@ showDay = function(...args) {
   setTimeout(initScrollReveal, 50);
 };
 
+// === 開啟時密碼驗證 ===
+function showLoginPrompt() {
+  // 如果已經解鎖過，直接進入
+  if (unlockedModes['private']) { viewMode = 'private'; isPrivateMode = true; return; }
+
+  // 檢查 URL 參數
+  try {
+    const p = new URLSearchParams(window.location.search).get('mode');
+    if (p === 'team') { viewMode = 'team'; return; }
+    if (p === 'zy' && unlockedModes['zy']) { viewMode = 'zy'; return; }
+  } catch(e) {}
+
+  const pwd = prompt('請輸入密碼以進入青青檢視：');
+  if (pwd === MODE_PASSWORDS.private) {
+    unlockedModes['private'] = true;
+    sessionStorage.setItem('unlockedModes', JSON.stringify(unlockedModes));
+    viewMode = 'private';
+    isPrivateMode = true;
+  } else {
+    viewMode = 'team';
+  }
+}
+showLoginPrompt();
+
 // === INIT ===
 (async () => {
   await loadTaskChecks();
