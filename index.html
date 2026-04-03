@@ -967,7 +967,7 @@ body::before {
   <div class="nav-inner">
     <div class="nav-brand" id="navBrand">青青專屬助理</div>
     <div class="nav-right">
-      <button class="mode-toggle team-mode" id="modeBtn" onclick="toggleMode()">團隊檢視</button>
+      <button class="mode-toggle team-mode" id="modeBtn" onclick="toggleMode()">🔒 切換檢視</button>
       <button class="mobile-nav-toggle" onclick="toggleMobileNav()" aria-label="選單">
         <span></span><span></span><span></span>
       </button>
@@ -1155,15 +1155,24 @@ const MONTHS_CONFIG = (function() {
 // *** 把你部署的 Apps Script 網址貼在這裡 ***
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKmthPDQr60-Db94v0Xf6g811FS5qDO7EJWVn8K0XDH2AS0IqiIVY_8Hfs5qk6iSf8Pg/exec';
 const API_TOKEN = 'qingqing2026star';
+const MODE_PASSWORDS = {
+  private: '682786',
+  zy: 'zhiyao2026'
+};
+let unlockedModes = {};
+try { unlockedModes = JSON.parse(sessionStorage.getItem('unlockedModes') || '{}'); } catch(e) {}
 
 // === STATE ===
 // viewMode: 'team' (all), 'private' (青青), 'zy' (智堯)
 let viewMode = (function() {
   try {
     const p = new URLSearchParams(window.location.search).get('mode');
-    if (p === 'zy' || p === 'team') return p;
+    if (p === 'team') return 'team';
+    if (p === 'zy' && unlockedModes['zy']) return 'zy';
+    if (p === 'private' && unlockedModes['private']) return 'private';
   } catch(e) {}
-  return 'private';
+  if (unlockedModes['private']) return 'private';
+  return 'team';
 })();
 let isPrivateMode = viewMode === 'private';
 let sheetData = [];
@@ -2088,15 +2097,15 @@ function updateVisibility() {
   const brand = document.getElementById('navBrand');
   if (viewMode === 'private') {
     btn.className = 'mode-toggle private-mode';
-    btn.textContent = '青青檢視';
+    btn.textContent = '🔓 青青檢視';
     if (brand) brand.textContent = '青青專屬助理';
   } else if (viewMode === 'zy') {
     btn.className = 'mode-toggle zy-mode';
-    btn.textContent = '智堯檢視';
+    btn.textContent = '🔓 智堯檢視';
     if (brand) brand.textContent = '智堯工作台';
   } else {
     btn.className = 'mode-toggle team-mode';
-    btn.textContent = '團隊檢視';
+    btn.textContent = '🔒 團隊檢視';
     if (brand) brand.textContent = '青青專屬助理';
   }
   isPrivateMode = viewMode === 'private';
@@ -2955,9 +2964,23 @@ function updateRefreshInfo() {
 
 // === MODE TOGGLE ===
 function toggleMode() {
-  const modes = ['private', 'zy', 'team'];
+  const modes = ['team', 'private', 'zy'];
   const idx = modes.indexOf(viewMode);
-  viewMode = modes[(idx + 1) % modes.length];
+  const nextMode = modes[(idx + 1) % modes.length];
+
+  if (MODE_PASSWORDS[nextMode] && !unlockedModes[nextMode]) {
+    const labels = {private: '青青檢視', zy: '智堯檢視'};
+    const pwd = prompt('請輸入「' + labels[nextMode] + '」密碼：');
+    if (!pwd) return;
+    if (pwd !== MODE_PASSWORDS[nextMode]) {
+      alert('密碼錯誤');
+      return;
+    }
+    unlockedModes[nextMode] = true;
+    sessionStorage.setItem('unlockedModes', JSON.stringify(unlockedModes));
+  }
+
+  viewMode = nextMode;
   isPrivateMode = viewMode === 'private';
   localStorage.setItem('dashboardMode', viewMode);
   try {
