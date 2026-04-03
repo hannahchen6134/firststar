@@ -631,18 +631,38 @@ body {
   }
   .mobile-nav-toggle { display: block; }
   .nav-right { gap: 8px; }
-  .mode-toggle { padding: 5px 10px; font-size: 0.72rem; }
+  .nav-brand { font-size: 0.95rem; }
+  .nav-brand::after { font-size: 0.55rem; margin-left: 5px; }
+  .mode-toggle { padding: 5px 10px; font-size: 0.68rem; }
   .brand-cards { grid-template-columns: 1fr; }
   .cal-cell { min-height: 56px; padding: 4px; }
   .cal-date { font-size: 0.72rem; }
   .cal-event { font-size: 0.55rem; padding: 1px 3px; }
-  .sop-container { padding: 20px; }
-  .section-title { font-size: 1.25rem; }
-  .main { padding: 20px 16px; }
+  .sop-container { padding: 16px; }
+  .section-title { font-size: 1.05rem; margin-bottom: 2px; }
+  .section-desc { font-size: 0.72rem; margin-bottom: 12px; }
+  .main { padding: 16px 20px; }
   .calendar-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .day-btn { font-size: 0.78rem; }
-  .day-grid-wrap { padding: 12px; }
-  .day-date { font-size: 1.4rem; }
+  .day-btn { font-size: 0.75rem; width: 36px; height: 36px; min-width: unset; min-height: unset; margin: 1px auto; }
+  .day-grid-wrap { padding: 16px; border-radius: 14px; }
+  .day-grid-header span { font-size: 0.7rem; }
+  .day-date { font-size: 1.1rem; }
+  .day-weekday { font-size: 0.78rem; }
+  .day-badge { padding: 2px 8px; font-size: 0.65rem; }
+  .day-card { padding: 16px; margin-bottom: 10px; border-radius: 12px; }
+  .day-card-title { font-size: 0.82rem; font-weight: 600; margin-bottom: 8px; padding-bottom: 8px; gap: 8px; letter-spacing: 0.04em; }
+  .day-card-title::before { width: 3px; height: 14px; }
+  .task-check { padding: 8px 4px; gap: 10px; }
+  .task-check input[type="checkbox"] { width: 17px; height: 17px; }
+  .task-check-label { font-size: 0.78rem; font-weight: 400; }
+  .task-meta { padding: 0px 4px 10px 34px; gap: 6px; }
+  .task-time-input { width: 40px; padding: 3px 4px; font-size: 0.7rem; }
+  .task-time-label { font-size: 0.65rem; }
+  .task-note { font-size: 0.7rem; padding: 5px 8px; }
+  .month-label { font-size: 0.82rem; padding: 5px 16px; }
+  .month-nav-btn { font-size: 0.9rem; padding: 4px 10px; }
+  .progress-track { height: 5px; }
+  .status-badge { font-size: 0.62rem; padding: 2px 7px; }
   .goal-new-row { flex-wrap: wrap; }
   .goal-new-input { flex: 1 1 100%; }
   .goal-brand-select { flex: 1; }
@@ -653,6 +673,15 @@ body {
   .cal-cell { min-height: 48px; }
   .cal-event { display: none; }
   .cal-status-dots { display: flex !important; }
+  .main { padding: 14px 16px; }
+  .day-card { padding: 14px; }
+  .day-btn { width: 32px; height: 32px; font-size: 0.7rem; }
+  .day-date { font-size: 1rem; }
+  .day-card-title { font-size: 0.78rem; margin-bottom: 6px; padding-bottom: 6px; }
+  .day-card-title::before { width: 2.5px; height: 12px; }
+  .task-check-label { font-size: 0.75rem; }
+  .section-title { font-size: 0.95rem; }
+  .nav-brand { font-size: 0.88rem; }
 }
 
 /* MONTH NAV */
@@ -1328,6 +1357,17 @@ function getDayTotal(day) {
   if (typeof t === 'number') return t;
   return (t.zy||0) + (t.personal||0) + (t.star||0);
 }
+function getTaskTimeTotal(day) {
+  let total = 0;
+  const prefix = 'time_' + day + '_';
+  for (const k in taskNotes) {
+    if (k.startsWith(prefix)) {
+      const v = parseInt(taskNotes[k]);
+      if (!isNaN(v)) total += v;
+    }
+  }
+  return total;
+}
 
 function isChecked(key) { return !!taskChecks[key]; }
 
@@ -1376,6 +1416,17 @@ function saveNote(key, value) {
   taskNotes[key] = value;
   localStorage.setItem('taskNotes', JSON.stringify(taskNotes));
   syncToCloud('taskNotes', taskNotes);
+  // Auto-update total when task time changes
+  if (key.startsWith('time_')) {
+    const dayMatch = key.match(/^time_(\d+)_/);
+    if (dayMatch) {
+      const day = parseInt(dayMatch[1]);
+      const taskTotal = getTaskTimeTotal(day);
+      const brandTotal = getDayTotal(day);
+      const el = document.getElementById('taskTimeTotalDisplay');
+      if (el) el.textContent = (taskTotal + brandTotal) + ' 分鐘';
+    }
+  }
 }
 
 // === LIFE TODOS ===
@@ -2403,12 +2454,12 @@ function showDay(day, month) {
   html += '<div class="day-card" style="padding:0;overflow:hidden;">';
 
   // Build section HTML blocks
-  const sec = (id) => `<div style="padding:20px 20px 8px;border-bottom:1px solid rgba(184,146,74,0.08);">`;
+  const sec = (id) => `<div style="padding:16px 16px 8px;border-bottom:1px solid rgba(184,146,74,0.08);">`;
 
   let secCarried = '';
   if (carried.length > 0) {
-    secCarried += '<div class="task-overdue" style="padding:20px 20px 8px;border-bottom:1px solid rgba(211,47,47,0.1);border-left:3px solid #D32F2F;">';
-    secCarried += '<div class="day-card-title" style="color:#D32F2F;">昨日延後<span class="overdue-badge">urgent</span></div>';
+    secCarried += '<div class="task-overdue" style="padding:16px 16px 8px;border-bottom:1px solid rgba(211,47,47,0.1);border-left:3px solid #D32F2F;">';
+    secCarried += '<div class="day-card-title" style="color:#D32F2F;">昨日延後</div>';
     carried.forEach((task, i) => { secCarried += taskCheckHTML(`${day}_carry_${i}`, task, '', true); });
     secCarried += '</div>';
   }
@@ -2416,7 +2467,7 @@ function showDay(day, month) {
   let secStar = '';
   const starCustom = renderCustomTasksForBrand('star');
   if (events.length > 0 || starCustom) {
-    secStar += '<div style="padding:20px 20px 8px;border-bottom:1px solid rgba(184,146,74,0.06);border-left:3px solid var(--star-primary);">';
+    secStar += '<div style="padding:16px 16px 8px;border-bottom:1px solid rgba(184,146,74,0.06);border-left:3px solid var(--star-primary);">';
     secStar += '<div class="day-card-title" style="color:var(--star-primary);">初星群</div>';
     events.filter(e => e.type !== 'ongoing').forEach((e,i) => { secStar += taskCheckHTML(`${day}_event_${i}`, e.name, '', true); });
     events.filter(e => e.type === 'ongoing').forEach(e => {
@@ -2431,7 +2482,7 @@ function showDay(day, month) {
     const zyTaskKeys = [`${day}_zy_threads`, ...ig.filter(t=>t.brand==='zy').map((_,i)=>`${day}_ig_${i}`)];
     const zyAllDone = zyTaskKeys.length > 0 && zyTaskKeys.every(k => isChecked(k));
     const zyDoneCount = zyTaskKeys.filter(k => isChecked(k)).length;
-    secZy += '<div style="padding:20px 20px 8px;border-bottom:1px solid rgba(184,146,74,0.06);border-left:3px solid var(--zy-primary);">';
+    secZy += '<div style="padding:16px 16px 8px;border-bottom:1px solid rgba(184,146,74,0.06);border-left:3px solid var(--zy-primary);">';
     secZy += '<div class="day-card-title" style="color:var(--zy-primary);">智堯';
     if (dayData) secZy += ` <span class="status-badge ${statusClass(dayData.zyStatus)}">${dayData.zyStatus}</span>`;
     secZy += '</div>';
@@ -2456,7 +2507,7 @@ function showDay(day, month) {
     const pTaskKeys = [`${day}_personal_threads`, ...ig.filter(t=>t.brand==='personal').map((_,i)=>{const idx=ig.indexOf(ig.filter(t2=>t2.brand==='personal')[i]);return `${day}_ig_${idx}`;})];
     const pAllDone = pTaskKeys.length > 0 && pTaskKeys.every(k => isChecked(k));
     const pDoneCount = pTaskKeys.filter(k => isChecked(k)).length;
-    secPersonal += '<div style="padding:20px 20px 8px;border-bottom:1px solid rgba(184,146,74,0.06);border-left:3px solid var(--personal-primary);">';
+    secPersonal += '<div style="padding:16px 16px 8px;border-bottom:1px solid rgba(184,146,74,0.06);border-left:3px solid var(--personal-primary);">';
     secPersonal += '<div class="day-card-title" style="color:var(--personal-primary);">青青品牌';
     if (dayData) secPersonal += ` <span class="status-badge ${statusClass(dayData.personalStatus)}">${dayData.personalStatus}</span>`;
     secPersonal += '</div>';
@@ -2507,7 +2558,7 @@ function showDay(day, month) {
   if (prep.length > 0) {
     const prepDoneCount = prep.filter((_,i) => isChecked(`${day}_prep_${i}`)).length;
     const prepAllDone = prepDoneCount === prep.length;
-    html += '<div style="padding:20px 20px 8px;border-bottom:1px solid rgba(184,146,74,0.08);">';
+    html += '<div style="padding:16px 16px 8px;border-bottom:1px solid rgba(184,146,74,0.08);">';
     html += '<div class="day-card-title" style="color:var(--text-mid);">準備事項</div>';
     if (prepAllDone) {
       html += `<div class="brand-complete" style="margin:0 0 8px;"><span class="complete-icon">✓</span><div class="brand-complete-text">準備事項全部完成！</div></div>`;
@@ -2533,7 +2584,7 @@ function showDay(day, month) {
     return true;
   });
   if (filteredGoalSteps.length > 0) {
-    html += '<div style="padding:20px 20px 8px;border-bottom:1px solid rgba(184,146,74,0.08);">';
+    html += '<div style="padding:16px 16px 8px;border-bottom:1px solid rgba(184,146,74,0.08);">';
     html += '<div class="day-card-title" style="color:var(--star-primary);">目標進度</div>';
     filteredGoalSteps.forEach(s => {
       const brandColors = {star: 'var(--star-primary)', zy: 'var(--zy-primary)', personal: 'var(--personal-primary)', life: 'var(--life-primary)'};
@@ -2570,12 +2621,17 @@ function showDay(day, month) {
   html += '</div>';
   } // end if viewMode !== 'zy'
 
-  // === 今日時間 ===
+  // === 今日時間總計 ===
+  const taskTimeTotal = getTaskTimeTotal(day);
   const zyTime = getTime(day, 'zy'), pTime = getTime(day, 'personal'), starTime = getTime(day, 'star');
   const dayTotal = getDayTotal(day);
+  const grandTotal = taskTimeTotal + dayTotal;
   const tis = 'width:52px;padding:4px 6px;border:1px solid var(--border);border-radius:6px;font-size:0.8rem;font-weight:600;text-align:center;font-family:inherit;color:var(--text-dark);background:var(--bg);outline:none;-moz-appearance:textfield;';
-  html += '<div class="day-card" style="padding:16px 20px;">';
-  html += `<div style="font-size:0.82rem;font-weight:600;color:var(--text-dark);margin-bottom:10px;">今日花費 <span style="font-weight:400;color:var(--text-light);">${dayTotal} 分鐘</span></div>`;
+  html += '<div class="day-card" style="padding:16px;">';
+  html += `<div style="font-size:0.82rem;font-weight:600;color:var(--text-dark);margin-bottom:10px;">今日花費 <span id="taskTimeTotalDisplay" style="font-weight:400;color:var(--text-light);">${grandTotal} 分鐘</span></div>`;
+  if (taskTimeTotal > 0) {
+    html += `<div style="font-size:0.72rem;color:var(--text-light);margin-bottom:8px;">任務填寫 ${taskTimeTotal} 分鐘 + 品牌 ${dayTotal} 分鐘</div>`;
+  }
   html += '<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;">';
   if (viewMode !== 'private') html += `<div style="display:flex;align-items:center;gap:5px;"><span class="brand-dot zy"></span><input type="number" min="0" max="999" value="${zyTime||''}" placeholder="0" class="task-time-input" style="${tis}" onchange="saveTimeSpent(${day},'zy',this.value?parseInt(this.value):0)"><span style="font-size:0.72rem;color:var(--text-light);">分</span></div>`;
   if (viewMode !== 'zy') html += `<div style="display:flex;align-items:center;gap:5px;"><span class="brand-dot personal"></span><input type="number" min="0" max="999" value="${pTime||''}" placeholder="0" class="task-time-input" style="${tis}" onchange="saveTimeSpent(${day},'personal',this.value?parseInt(this.value):0)"><span style="font-size:0.72rem;color:var(--text-light);">分</span></div>`;
