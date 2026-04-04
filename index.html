@@ -1125,7 +1125,7 @@ select option {
              radial-gradient(ellipse 50% 35% at 10% 95%,rgba(220,190,150,.15) 0%,transparent 50%);
 }
 .lock-inner { text-align:center;padding:48px 36px;max-width:360px;width:100%;position:relative;z-index:1; }
-.lock-star { font-size:0.35rem;color:rgba(184,146,74,0.35);letter-spacing:1em;margin-bottom:20px; }
+.lock-star { font-size:0.18rem;color:rgba(184,146,74,0.3);letter-spacing:1.2em;margin-bottom:20px; }
 .lock-title { font-family:'Noto Serif TC',serif;font-size:1.4rem;font-weight:600;color:#3A2A14;margin-bottom:6px;letter-spacing:0.08em; }
 .lock-subtitle { font-size:0.8rem;color:#9B8B78;margin-bottom:32px;letter-spacing:0.06em; }
 .lock-input {
@@ -1685,10 +1685,11 @@ function syncToCloud(key, value) {
   }).catch(e => console.warn('Cloud sync failed:', e));
 }
 
-function syncToCalendar(title, brand, month, day, time) {
+function syncToCalendar(title, brand, month, day, time, duration) {
   if (!APPS_SCRIPT_URL) return;
   const payload = {action: 'createCalendarEvent', title, brand, year: 2026, month, day, token: API_TOKEN};
-  if (time) payload.time = time; // e.g. "14:00"
+  if (time) payload.time = time;
+  if (duration) payload.duration = duration;
   fetch(APPS_SCRIPT_URL, {
     method: 'POST', mode: 'no-cors',
     headers: {'Content-Type': 'application/json'},
@@ -1882,6 +1883,14 @@ function getTaskTimeTotal(day) {
       if (!isNaN(v)) total += v;
     }
   }
+  // Include custom task durations
+  for (const dayKey in customTasks) {
+    if (dayKey.endsWith('_' + day)) {
+      (customTasks[dayKey] || []).forEach(ct => {
+        if (ct.duration) total += ct.duration;
+      });
+    }
+  }
   return total;
 }
 
@@ -1986,7 +1995,10 @@ function saveNote(key, value) {
       const day = parseInt(dayMatch[1]);
       const taskTotal = getTaskTimeTotal(day);
       const el = document.getElementById('taskTimeTotalDisplay');
-      if (el) el.textContent = taskTotal;
+      if (el) {
+        const h = Math.floor(taskTotal / 60), m = taskTotal % 60;
+        el.textContent = taskTotal >= 60 ? (h + 'h ' + (m > 0 ? m + 'min' : '')) : (taskTotal + ' min');
+      }
     }
   }
 }
@@ -2050,18 +2062,29 @@ function addCustomTask(day, month) {
   const text = input.value.trim();
   const brand = brandEl.dataset ? brandEl.dataset.value : brandEl.value;
   const note = noteEl ? noteEl.value.trim() : '';
-  const time = getCustomTime('customTask_' + key);
+  const startTime = getCustomTime('customTaskStart_' + key);
+  const endTime = getCustomTime('customTaskEnd_' + key);
+  const duration = calcDuration(startTime, endTime);
+  const timeDisplay = (startTime && endTime) ? startTime + '-' + endTime : startTime || '';
   if (!customTasks[key]) customTasks[key] = [];
-  customTasks[key].push({text, brand, done: false, note: note, time: time});
+  customTasks[key].push({text, brand, done: false, note: note, time: startTime, endTime: endTime, duration: duration});
   localStorage.setItem('customTasks', JSON.stringify(customTasks));
   syncToCloud('customTasks', customTasks);
   const calTitle = text + (note ? '（' + note + '）' : '');
-  syncToCalendar(calTitle, brand, month, day, time);
-  // Sync to Google Form if configured
+  syncToCalendar(calTitle, brand, month, day, startTime, duration);
   if (GOOGLE_FORM_URL) {
-    syncToGoogleForm({date: `2026/${month}/${day}`, task: text, brand: brand, note: note, time: time});
+    syncToGoogleForm({date: `2026/${month}/${day}`, task: text, brand: brand, note: note, time: startTime, duration: duration});
   }
   showDay(day, month);
+}
+
+function calcDuration(start, end) {
+  if (!start || !end) return 0;
+  const [sh, sm] = start.split(':').map(Number);
+  const [eh, em] = end.split(':').map(Number);
+  let diff = (eh * 60 + em) - (sh * 60 + sm);
+  if (diff < 0) diff += 24 * 60; // 跨午夜
+  return diff;
 }
 
 function syncToGoogleForm(data) {
@@ -3073,12 +3096,15 @@ function showDay(day, month) {
           <div class="custom-brand-menu-item" data-value="life" onclick="selectBrand(this)"><span class="brand-dot" style="background:var(--life-primary)"></span>生活</div>
         </div>
       </div>
-      <input type="text" class="life-input" id="customTaskInput_${ctKey}" placeholder="輸入任務內容..." onkeydown="if(event.key==='Enter')addCustomTask(${day},${month})" style="flex:1;border-color:rgba(184,146,74,0.25);">
+      <input type="text" class="life-input" id="customTaskInput_${ctKey}" placeholder="任務內容" onkeydown="if(event.key==='Enter')addCustomTask(${day},${month})" style="flex:1;border-color:rgba(184,146,74,0.25);">
       <button class="life-add-btn" onclick="addCustomTask(${day},${month})" style="background:var(--star-primary);">+</button>
     </div>
-    <div style="display:flex;gap:8px;align-items:center;">
-      ${createTimePicker('customTask_' + ctKey)}
-      <input type="text" class="life-input" id="customTaskNote_${ctKey}" placeholder="備註（選填）..." style="flex:1;border-color:rgba(184,146,74,0.18);font-size:0.8rem;padding:8px 14px;">
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+      ${createTimePicker('customTaskStart_' + ctKey)}
+      <span style="color:var(--text-light);font-size:0.75rem;">-</span>
+      ${createTimePicker('customTaskEnd_' + ctKey)}
+      <span id="customTaskDurLabel_${ctKey}" style="font-family:'EB Garamond',serif;font-size:0.75rem;color:var(--star-primary);min-width:36px;"></span>
+      <input type="text" class="life-input" id="customTaskNote_${ctKey}" placeholder="備註（選填）" style="flex:1;min-width:80px;border-color:rgba(184,146,74,0.18);font-size:0.78rem;padding:7px 12px;">
     </div>
   </div>`;
   html += '</div>';
@@ -3095,8 +3121,8 @@ function showDay(day, month) {
         <label class="task-check${ct.done ? ' done' : ''}" style="flex:1;">
           <input type="checkbox" ${ct.done ? 'checked' : ''} onchange="toggleCustomTask(${day},${month},${realIdx});this.closest('.task-check').classList.toggle('done',this.checked)">
           <span class="task-check-label">
-            ${ct.time ? '<span style="color:var(--star-primary);font-size:0.75rem;font-weight:600;margin-right:6px;">' + escapeHtml(ct.time) + '</span>' : ''}${escapeHtml(ct.text)}<span style="color:var(--text-light);font-size:0.7rem;margin-left:6px;">自訂</span>
-            ${ct.note ? '<div style="font-size:0.75rem;color:var(--text-light);margin-top:3px;padding-left:2px;line-height:1.5;">📝 ' + escapeHtml(ct.note) + '</div>' : ''}
+            ${ct.time ? '<span style="color:var(--star-primary);font-size:0.75rem;font-weight:600;margin-right:6px;font-family:EB Garamond,serif;">' + escapeHtml(ct.time) + (ct.endTime ? '-' + escapeHtml(ct.endTime) : '') + '</span>' : ''}${escapeHtml(ct.text)}${ct.duration ? '<span style="color:var(--text-light);font-size:0.68rem;margin-left:6px;font-family:EB Garamond,serif;">' + ct.duration + 'min</span>' : ''}
+            ${ct.note ? '<div style="font-size:0.72rem;color:var(--text-light);margin-top:3px;padding-left:2px;line-height:1.5;">' + escapeHtml(ct.note) + '</div>' : ''}
           </span>
         </label>
         <button onclick="editCustomTaskNote(${day},${month},${realIdx})" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:0.8rem;padding:8px 10px;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'" title="編輯備註">📝</button>
@@ -3284,8 +3310,11 @@ function showDay(day, month) {
 
   // === 今日時間總計（自動從任務分鐘匯總）===
   const taskTimeTotal = getTaskTimeTotal(day);
+  const ttHours = Math.floor(taskTimeTotal / 60);
+  const ttMins = taskTimeTotal % 60;
+  const ttDisplay = taskTimeTotal >= 60 ? (ttHours + 'h ' + (ttMins > 0 ? ttMins + 'min' : '')) : (taskTimeTotal + ' min');
   html += '<div class="day-card" style="padding:16px;">';
-  html += `<div style="font-size:0.82rem;font-weight:600;color:var(--text-dark);">今日花費 <span id="taskTimeTotalDisplay" style="font-weight:700;color:var(--star-primary);font-size:1rem;">${taskTimeTotal}</span> <span style="font-weight:400;color:var(--text-light);">分鐘</span></div>`;
+  html += `<div style="font-size:0.82rem;font-weight:600;color:var(--text-dark);display:flex;align-items:baseline;gap:8px;">今日花費 <span id="taskTimeTotalDisplay" style="font-weight:700;color:var(--star-primary);font-size:1.05rem;font-family:'EB Garamond',serif;">${ttDisplay}</span></div>`;
   if (taskTimeTotal === 0) {
     html += `<div style="font-size:0.72rem;color:var(--text-light);margin-top:4px;">在每個任務旁填寫花費分鐘，會自動加總</div>`;
   }
@@ -3662,6 +3691,21 @@ function selectTimeItem(item, inputId, btnId) {
   item.parentElement.querySelectorAll('.custom-time-menu-item').forEach(i => i.classList.remove('selected'));
   item.classList.add('selected');
   item.parentElement.classList.remove('open');
+  // Auto-calc duration preview for customTask time pickers
+  const match = inputId.match(/^customTask(Start|End)_(.+?)_(hour|min)$/);
+  if (match) {
+    const dayKey = match[2];
+    const s = getCustomTime('customTaskStart_' + dayKey);
+    const e = getCustomTime('customTaskEnd_' + dayKey);
+    const label = document.getElementById('customTaskDurLabel_' + dayKey);
+    if (label) {
+      const dur = calcDuration(s, e);
+      if (dur > 0) {
+        const h = Math.floor(dur / 60), m = dur % 60;
+        label.textContent = dur >= 60 ? h + 'h' + (m > 0 ? m + 'm' : '') : dur + 'min';
+      } else { label.textContent = ''; }
+    }
+  }
 }
 
 // Close time menus when clicking outside
