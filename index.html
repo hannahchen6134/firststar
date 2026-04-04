@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>青青專屬助理</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -185,13 +185,13 @@ body::before {
 .section-header { position: relative; z-index: 1; }
 .calendar-container { position: relative; }
 
-.section-header { margin-bottom: 28px; background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 20px 24px; box-shadow: 0 4px 24px rgba(58,42,20,0.1); border: 1px solid rgba(184,146,74,0.2); }
+.section-header { margin-bottom: 28px; padding: 20px 8px; border-bottom: 1px solid rgba(184,146,74,0.12); }
 .section-title {
-  font-family: 'Noto Serif TC', serif; font-size: 1.5rem;
-  font-weight: 700; color: var(--text-dark); margin-bottom: 8px;
-  letter-spacing: 0.04em;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', serif; font-size: 1.6rem;
+  font-weight: 600; color: var(--text-dark); margin-bottom: 6px;
+  letter-spacing: 0.06em;
 }
-.section-subtitle { font-size: 0.88rem; color: var(--text-light); letter-spacing: 0.02em; }
+.section-subtitle { font-family: 'Noto Serif TC', serif; font-size: 0.85rem; color: var(--text-light); letter-spacing: 0.04em; font-weight: 300; }
 
 /* LOADING */
 .loading-bar {
@@ -236,9 +236,9 @@ body::before {
 .brand-card-role { font-size: 0.8rem; color: var(--text-light); margin-left: auto; }
 
 .brand-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.brand-stat { background: var(--bg); border-radius: 8px; padding: 12px; text-align: center; }
-.brand-stat-value { font-size: 1.3rem; font-weight: 600; color: var(--text-dark); }
-.brand-stat-label { font-size: 0.75rem; color: var(--text-light); margin-top: 2px; }
+.brand-stat { background: var(--bg); border-radius: 8px; padding: 12px; text-align: center; box-shadow: 0 2px 8px rgba(58,42,20,0.07), 0 1px 3px rgba(58,42,20,0.04); border: 1px solid rgba(184,146,74,0.08); }
+.brand-stat-value { font-family: 'EB Garamond', 'Noto Serif TC', serif; font-size: 1.5rem; font-weight: 400; color: var(--text-dark); letter-spacing: 0.02em; }
+.brand-stat-label { font-size: 0.72rem; color: var(--text-light); margin-top: 4px; letter-spacing: 0.04em; }
 
 /* PROGRESS */
 .progress-section {
@@ -277,7 +277,7 @@ body::before {
   box-sizing: border-box; max-width: 100%;
 }
 .calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-.calendar-month { font-family: 'Noto Serif TC', serif; font-size: 1.3rem; font-weight: 600; }
+.calendar-month { font-family: 'Cormorant Garamond', 'Noto Serif TC', serif; font-size: 1.4rem; font-weight: 600; letter-spacing: 0.06em; }
 .calendar-legend { display: flex; gap: 16px; flex-wrap: wrap; }
 .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--text-mid); }
 .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
@@ -419,7 +419,7 @@ body::before {
 .day-header {
   display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
 }
-.day-date { font-family: 'Noto Serif TC', serif; font-size: 1.8rem; font-weight: 700; }
+.day-date { font-family: 'EB Garamond', 'Noto Serif TC', serif; font-size: 1.8rem; font-weight: 400; }
 .day-weekday { font-size: 1rem; color: var(--text-light); }
 .day-badge {
   background: var(--star-primary); color: white;
@@ -632,9 +632,11 @@ body::before {
 .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
 .summary-stat {
   text-align: center; padding: 16px; border-radius: 10px; background: var(--bg);
+  box-shadow: 0 2px 8px rgba(58,42,20,0.07), 0 1px 3px rgba(58,42,20,0.04);
+  border: 1px solid rgba(184,146,74,0.08);
 }
-.summary-stat-value { font-size: 1.8rem; font-weight: 700; }
-.summary-stat-label { font-size: 0.78rem; color: var(--text-light); margin-top: 4px; }
+.summary-stat-value { font-family: 'EB Garamond', 'Noto Serif TC', serif; font-size: 2rem; font-weight: 400; letter-spacing: 0.02em; }
+.summary-stat-label { font-size: 0.75rem; color: var(--text-light); margin-top: 4px; letter-spacing: 0.04em; }
 .missed-list { margin-top: 16px; }
 .missed-item {
   display: flex; align-items: center; gap: 10px; padding: 8px 12px;
@@ -717,7 +719,8 @@ body::before {
 @media (max-width: 420px) {
   .brand-stats { grid-template-columns: 1fr; }
   .cal-cell { min-height: 44px; padding: 2px; }
-  .cal-event { display: none; }
+  .cal-event { font-size: 0; padding: 0; width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin: 1px; }
+  .cal-events { flex-direction: row; flex-wrap: wrap; gap: 2px; }
   .cal-status-dots { display: flex !important; }
   .cal-header-cell { font-size: 0.62rem; }
   .cal-date { font-size: 0.62rem; }
@@ -732,6 +735,21 @@ body::before {
   .section-title { font-size: 0.95rem; }
   .nav-brand { font-size: 0.88rem; }
   .brand-card { padding: 14px; }
+}
+
+/* SWIPE HINT */
+@keyframes swipeHint {
+  0%, 100% { opacity: 0; transform: translateX(0); }
+  30% { opacity: 0.6; }
+  50% { opacity: 0.6; transform: translateX(-8px); }
+  70% { opacity: 0.6; transform: translateX(0); }
+}
+.swipe-hint {
+  display: none; text-align: center; font-size: 0.72rem; color: var(--text-light);
+  padding: 6px 0; letter-spacing: 0.04em;
+}
+@media (max-width: 768px) {
+  .swipe-hint { display: block; }
 }
 
 /* MONTH NAV */
@@ -841,7 +859,8 @@ body::before {
 .goal-step-done { text-decoration: line-through; opacity: 0.4; }
 .goal-step-remove {
   background: none; border: none; color: var(--text-light);
-  cursor: pointer; font-size: 0.75rem; opacity: 0.5; padding: 2px 6px;
+  cursor: pointer; font-size: 1rem; opacity: 0.5; padding: 8px 12px;
+  min-height: 44px; min-width: 44px; display: flex; align-items: center; justify-content: center;
 }
 .goal-step-remove:hover { opacity: 1; }
 .goal-add-step {
@@ -862,10 +881,11 @@ body::before {
   padding: 7px 14px; border: none; border-radius: 8px;
   font-family: 'Noto Sans TC', sans-serif; font-size: 0.82rem;
   cursor: pointer; font-weight: 500; transition: all 0.3s ease;
+  min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
 }
 .goal-small-btn.add { background: var(--star-primary); color: white; }
 .goal-small-btn.add:hover { opacity: 0.85; }
-.goal-small-btn.del { background: transparent; color: var(--text-light); font-size: 0.75rem; }
+.goal-small-btn.del { background: transparent; color: var(--text-light); font-size: 1rem; min-width: 44px; }
 /* Timeline */
 .day-timeline {
   background: linear-gradient(135deg, rgba(184,146,74,0.08) 0%, rgba(184,146,74,0.03) 100%);
@@ -936,6 +956,45 @@ body::before {
   outline: none; border-bottom: 1.5px solid var(--star-primary);
   padding-bottom: 1px;
 }
+/* Edit Modal */
+.edit-modal-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(42,28,14,0.35); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+  padding: 20px;
+}
+.edit-modal-overlay.open { opacity: 1; pointer-events: auto; }
+.edit-modal {
+  background: linear-gradient(165deg, #FFFDF9 0%, #FAF6F0 100%);
+  border-radius: 16px; padding: 28px 24px; width: 100%; max-width: 380px;
+  box-shadow: 0 12px 48px rgba(58,42,20,0.2), 0 2px 8px rgba(58,42,20,0.08);
+  border: 1px solid rgba(184,146,74,0.15);
+  transform: translateY(12px) scale(0.97); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+.edit-modal-overlay.open .edit-modal { transform: translateY(0) scale(1); }
+.edit-modal-title {
+  font-family: 'Noto Serif TC', serif; font-size: 0.92rem; font-weight: 600;
+  color: var(--text-dark); margin-bottom: 16px; letter-spacing: 0.04em;
+}
+.edit-modal-input {
+  width: 100%; padding: 12px 16px; border: 1.5px solid rgba(184,146,74,0.25);
+  border-radius: 10px; font-family: 'Noto Sans TC', sans-serif; font-size: 0.92rem;
+  color: var(--text-dark); background: white; outline: none; box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.edit-modal-input:focus { border-color: rgba(184,146,74,0.5); box-shadow: 0 0 0 4px rgba(184,146,74,0.08); }
+.edit-modal-actions {
+  display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;
+}
+.edit-modal-btn {
+  padding: 8px 20px; border: none; border-radius: 8px; font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.3s; letter-spacing: 0.04em;
+}
+.edit-modal-btn.cancel { background: transparent; color: var(--text-light); }
+.edit-modal-btn.cancel:hover { color: var(--text-mid); }
+.edit-modal-btn.confirm { background: var(--star-primary); color: white; }
+.edit-modal-btn.confirm:hover { opacity: 0.85; }
 .goal-header-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
 .goal-actions-row { margin-top: 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
 .goal-expand-panel {
@@ -957,21 +1016,177 @@ body::before {
 .goal-new-input:focus { border-color: var(--star-primary); }
 .goal-brand-select {
   padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 10px;
-  font-family: 'Noto Sans TC', sans-serif; font-size: 0.82rem;
-  color: var(--text-dark); background: var(--bg); outline: none;
+  font-family: 'Noto Sans TC', sans-serif; font-size: 0.88rem;
+  font-weight: 600; color: #3A2A14; background: var(--bg); outline: none;
+}
+.goal-brand-select option { font-weight: 600; color: #3A2A14; }
+
+/* 全站下拉選單深咖啡色 */
+select {
+  color: #3A2A14 !important;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 600;
+}
+select option {
+  background: #FFFDF9;
+  color: #3A2A14 !important;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 6px 12px;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+
+/* 自訂時間下拉選單 */
+.custom-time-dropdown {
+  position: relative; display: inline-flex; align-items: center; gap: 4px;
+  padding: 7px 12px; border: 1.5px solid rgba(184,146,74,0.18); border-radius: 8px;
+  background: white; min-width: 120px; cursor: pointer; user-select: none;
+  transition: border-color 0.3s;
+}
+.custom-time-dropdown:focus-within,
+.custom-time-dropdown:hover { border-color: rgba(184,146,74,0.45); }
+.custom-time-btn {
+  background: none; border: none; font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.95rem; font-weight: 700; color: #3A2A14; cursor: pointer;
+  padding: 2px 6px; border-radius: 4px; min-width: 32px; text-align: center;
+  transition: background 0.2s;
+}
+.custom-time-btn:hover { background: rgba(184,146,74,0.1); }
+.custom-time-colon {
+  font-family: 'Noto Sans TC', sans-serif; font-size: 0.95rem;
+  font-weight: 700; color: #3A2A14;
+}
+.custom-time-menu {
+  position: absolute; top: calc(100% + 4px); left: 0;
+  background: #FFFDF9; border: 1.5px solid rgba(184,146,74,0.25);
+  border-radius: 10px; box-shadow: 0 6px 24px rgba(58,42,20,0.15);
+  z-index: 1000; max-height: 200px; overflow-y: auto; min-width: 56px;
+  padding: 4px 0; display: none;
+}
+.custom-time-menu.open { display: block; }
+.custom-time-menu-item {
+  padding: 8px 16px; font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.92rem; font-weight: 600; color: #3A2A14;
+  cursor: pointer; text-align: center; transition: background 0.15s;
+}
+.custom-time-menu-item:hover { background: rgba(184,146,74,0.12); }
+.custom-time-menu-item.selected { background: rgba(184,146,74,0.18); color: var(--star-primary); }
+.custom-time-menu::-webkit-scrollbar { width: 4px; }
+.custom-time-menu::-webkit-scrollbar-thumb { background: rgba(184,146,74,0.3); border-radius: 2px; }
+
+/* 自訂品牌下拉選單 */
+.custom-brand-select {
+  position: relative; display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 10px;
+  background: var(--bg); cursor: pointer; user-select: none;
+  font-family: 'Noto Sans TC', sans-serif; font-size: 0.88rem;
+  font-weight: 600; color: #3A2A14; min-width: 100px; min-height: 44px;
+  transition: border-color 0.3s;
+}
+.custom-brand-select:hover { border-color: rgba(184,146,74,0.45); }
+.custom-brand-select .brand-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.custom-brand-select .brand-arrow {
+  font-size: 0.6rem; color: var(--text-light); margin-left: auto; transition: transform 0.2s;
+}
+.custom-brand-select.open .brand-arrow { transform: rotate(180deg); }
+.custom-brand-menu {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: #FFFDF9; border: 1.5px solid rgba(184,146,74,0.25);
+  border-radius: 10px; box-shadow: 0 6px 24px rgba(58,42,20,0.15);
+  z-index: 1000; padding: 4px 0; display: none;
+}
+.custom-brand-menu.open { display: block; }
+.custom-brand-menu-item {
+  padding: 10px 16px; font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.88rem; font-weight: 600; color: #3A2A14;
+  cursor: pointer; display: flex; align-items: center; gap: 8px;
+  transition: background 0.15s;
+}
+.custom-brand-menu-item:hover { background: rgba(184,146,74,0.12); }
+.custom-brand-menu-item.selected { background: rgba(184,146,74,0.18); }
+.custom-brand-menu-item .brand-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
 }
 </style>
 </head>
 <body>
 
 <!-- 密碼鎖畫面 -->
-<div id="lockScreen" style="display:none;position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#FDFAF5 0%,#FBF6EE 25%,#F9F4EB 50%,#FBF7F0 75%,#FDFAF5 100%);display:flex;align-items:center;justify-content:center;">
-  <div style="text-align:center;padding:40px 32px;max-width:340px;width:100%;">
-    <div style="font-family:'Noto Serif TC',serif;font-size:1.3rem;font-weight:600;color:#3A2A14;margin-bottom:8px;" id="lockTitle">青青專屬助理</div>
-    <div style="font-size:0.82rem;color:#9B8B78;margin-bottom:28px;" id="lockSubtitle">請輸入密碼</div>
-    <input type="password" id="lockInput" placeholder="密碼" style="width:100%;padding:14px 18px;border:2px solid rgba(184,146,74,0.3);border-radius:12px;font-family:'Noto Sans TC',sans-serif;font-size:1rem;color:#3A2A14;background:rgba(255,255,255,0.9);outline:none;text-align:center;letter-spacing:0.15em;box-sizing:border-box;" onkeydown="if(event.key==='Enter')unlockMode()">
-    <div id="lockError" style="font-size:0.78rem;color:#D32F2F;margin-top:10px;min-height:20px;"></div>
-    <button onclick="unlockMode()" style="margin-top:12px;padding:12px 36px;border:none;border-radius:12px;background:linear-gradient(135deg,#C9A04E,#B8924A);color:white;font-family:'Noto Sans TC',sans-serif;font-size:0.92rem;font-weight:600;cursor:pointer;letter-spacing:0.06em;box-shadow:0 4px 16px rgba(184,146,74,0.35);transition:all 0.3s;">進入</button>
+<style>
+.lock-screen {
+  position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,#FDFAF5 0%,#FBF6EE 25%,#F9F4EB 50%,#FBF7F0 75%,#FDFAF5 100%);
+}
+.lock-screen::before {
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 60% 40% at 85% 5%,rgba(255,215,160,.18) 0%,transparent 55%),
+             radial-gradient(ellipse 50% 35% at 10% 95%,rgba(220,190,150,.15) 0%,transparent 50%);
+}
+.lock-inner { text-align:center;padding:48px 36px;max-width:360px;width:100%;position:relative;z-index:1; }
+.lock-star { font-size:0.7rem;color:rgba(184,146,74,0.4);letter-spacing:0.6em;margin-bottom:20px; }
+.lock-title { font-family:'Noto Serif TC',serif;font-size:1.4rem;font-weight:600;color:#3A2A14;margin-bottom:6px;letter-spacing:0.08em; }
+.lock-subtitle { font-size:0.8rem;color:#9B8B78;margin-bottom:32px;letter-spacing:0.06em; }
+.lock-input {
+  width:100%;padding:14px 18px;border:1.5px solid rgba(184,146,74,0.25);border-radius:10px;
+  font-family:'Noto Sans TC',sans-serif;font-size:1rem;color:#3A2A14;background:rgba(255,255,255,0.85);
+  outline:none;text-align:center;letter-spacing:0.15em;box-sizing:border-box;
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.lock-input:focus { border-color:rgba(184,146,74,0.5);box-shadow:0 0 0 4px rgba(184,146,74,0.08); }
+.lock-error { font-size:0.78rem;color:#D32F2F;margin-top:10px;min-height:20px; }
+.lock-btn {
+  margin-top:16px;padding:0;border:none;background:transparent;cursor:pointer;
+  font-family:'Noto Serif TC',serif;font-size:0.88rem;font-weight:500;
+  color:var(--star-primary,#B8924A);letter-spacing:0.18em;
+  position:relative;display:inline-flex;align-items:center;gap:8px;
+  transition:all 0.4s ease;
+}
+.lock-btn::after {
+  content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(184,146,74,0.5),transparent);
+  transition:all 0.4s ease;
+}
+.lock-btn:hover { color:#D4A853;letter-spacing:0.22em; }
+.lock-btn:hover::after { background:linear-gradient(90deg,transparent,rgba(212,168,83,0.7),transparent); }
+.lock-btn:active { transform:scale(0.97); }
+.lock-btn .lock-arrow {
+  display:inline-block;transition:transform 0.3s ease;font-size:0.75rem;
+}
+.lock-btn:hover .lock-arrow { transform:translateX(3px); }
+.lock-divider {
+  width:40px;height:1px;margin:0 auto 24px;
+  background:linear-gradient(90deg,transparent,rgba(184,146,74,0.35),transparent);
+}
+</style>
+<!-- 編輯 Modal -->
+<div class="edit-modal-overlay" id="editModalOverlay" onclick="if(event.target===this)closeEditModal()">
+  <div class="edit-modal">
+    <div class="edit-modal-title" id="editModalTitle">修改名稱</div>
+    <input type="text" class="edit-modal-input" id="editModalInput" onkeydown="if(event.key==='Enter')confirmEditModal()">
+    <div id="editModalTimeRow" style="display:none;margin-top:14px;">
+      <div style="font-family:'Noto Serif TC',serif;font-size:0.82rem;color:var(--text-mid);margin-bottom:8px;letter-spacing:0.04em;">時間</div>
+      <div style="display:flex;align-items:center;gap:6px;" id="editModalTimeControls">
+        <span style="font-family:'Noto Sans TC',sans-serif;font-size:0.78rem;color:var(--text-light);">留空 = 全天事件</span>
+      </div>
+    </div>
+    <div class="edit-modal-actions">
+      <button class="edit-modal-btn cancel" onclick="closeEditModal()">取消</button>
+      <button class="edit-modal-btn confirm" onclick="confirmEditModal()">確認</button>
+    </div>
+  </div>
+</div>
+
+<div id="lockScreen" class="lock-screen">
+  <div class="lock-inner">
+    <div class="lock-star">✦ &nbsp; ✦ &nbsp; ✦</div>
+    <div class="lock-title" id="lockTitle">青青專屬助理</div>
+    <div class="lock-divider"></div>
+    <div class="lock-subtitle" id="lockSubtitle">請輸入密碼</div>
+    <input type="password" id="lockInput" class="lock-input" placeholder="・ ・ ・ ・ ・ ・" onkeydown="if(event.key==='Enter')unlockMode()">
+    <div id="lockError" class="lock-error"></div>
+    <button onclick="unlockMode()" class="lock-btn">進入空間 <span class="lock-arrow">→</span></button>
   </div>
 </div>
 
@@ -990,6 +1205,7 @@ body::before {
         <button class="nav-tab" data-section="goals">目標</button>
         <button class="nav-tab" data-section="summary">月報</button>
         <button class="nav-tab" data-section="sop">SOP</button>
+        <button class="nav-tab" data-section="teamcal">團隊行事曆</button>
       </div>
     </div>
   </div>
@@ -1036,6 +1252,7 @@ body::before {
         </div>
       </div>
       <div class="cal-grid" id="calGrid"></div>
+      <div class="swipe-hint">← 滑動切換月份 →</div>
     </div>
   </div>
 
@@ -1062,12 +1279,17 @@ body::before {
     <div id="goalYearPanel">
       <div class="goal-new-row">
         <input type="text" class="goal-new-input" id="yearGoalInput" placeholder="新增年度目標...">
-        <select class="goal-brand-select" id="yearGoalBrand">
-          <option value="star">初星群</option>
-          <option value="zy">智堯</option>
-          <option value="personal">青青</option>
-          <option value="life">生活</option>
-        </select>
+        <div class="custom-brand-select" id="yearGoalBrand" onclick="toggleBrandMenu(this)" data-value="star">
+          <span class="brand-dot" style="background:var(--star-primary)"></span>
+          <span class="brand-label">初星群</span>
+          <span class="brand-arrow">▼</span>
+          <div class="custom-brand-menu" id="yearGoalBrandMenu">
+            <div class="custom-brand-menu-item selected" data-value="star" onclick="selectBrand(this)"><span class="brand-dot" style="background:var(--star-primary)"></span>初星群</div>
+            <div class="custom-brand-menu-item" data-value="zy" onclick="selectBrand(this)"><span class="brand-dot" style="background:var(--zy-primary)"></span>智堯</div>
+            <div class="custom-brand-menu-item" data-value="personal" onclick="selectBrand(this)"><span class="brand-dot" style="background:var(--personal-primary)"></span>青青</div>
+            <div class="custom-brand-menu-item" data-value="life" onclick="selectBrand(this)"><span class="brand-dot" style="background:var(--life-primary)"></span>生活</div>
+          </div>
+        </div>
         <button class="goal-small-btn add" onclick="addYearGoal()">新增</button>
       </div>
       <div id="yearGoalsContent"></div>
@@ -1076,12 +1298,17 @@ body::before {
       <div class="month-nav" id="goalMonthNav"></div>
       <div class="goal-new-row">
         <input type="text" class="goal-new-input" id="goalNewInput" placeholder="新增月目標...">
-        <select class="goal-brand-select" id="goalBrandSelect">
-          <option value="star">初星群</option>
-          <option value="zy">智堯</option>
-          <option value="personal">青青</option>
-          <option value="life">生活</option>
-        </select>
+        <div class="custom-brand-select" id="goalBrandSelect" onclick="toggleBrandMenu(this)" data-value="star">
+          <span class="brand-dot" style="background:var(--star-primary)"></span>
+          <span class="brand-label">初星群</span>
+          <span class="brand-arrow">▼</span>
+          <div class="custom-brand-menu" id="goalBrandMenu">
+            <div class="custom-brand-menu-item selected" data-value="star" onclick="selectBrand(this)"><span class="brand-dot" style="background:var(--star-primary)"></span>初星群</div>
+            <div class="custom-brand-menu-item" data-value="zy" onclick="selectBrand(this)"><span class="brand-dot" style="background:var(--zy-primary)"></span>智堯</div>
+            <div class="custom-brand-menu-item" data-value="personal" onclick="selectBrand(this)"><span class="brand-dot" style="background:var(--personal-primary)"></span>青青</div>
+            <div class="custom-brand-menu-item" data-value="life" onclick="selectBrand(this)"><span class="brand-dot" style="background:var(--life-primary)"></span>生活</div>
+          </div>
+        </div>
         <button class="goal-small-btn add" onclick="addGoal()">新增</button>
       </div>
       <div id="goalsContent"></div>
@@ -1107,8 +1334,8 @@ body::before {
     </div>
     <div class="sop-container">
       <div class="sop-brand-tabs">
+        <button class="sop-brand-tab" onclick="switchSop('personal',this)">青青品牌</button>
         <button class="sop-brand-tab active-zy" onclick="switchSop('zy',this)">智堯品牌</button>
-        <button class="sop-brand-tab personal-only" onclick="switchSop('personal',this)">青青品牌</button>
         <button class="sop-brand-tab" onclick="switchSop('star',this)">初星群活動</button>
       </div>
       <div class="sop-content" id="sop-zy">
@@ -1145,6 +1372,24 @@ body::before {
       </div>
     </div>
   </div>
+
+  <!-- 團隊行事曆 -->
+  <div class="section" id="sec-teamcal">
+    <div class="section-header">
+      <div class="section-title">團隊行事曆</div>
+      <div class="section-subtitle">Google 行事曆同步檢視</div>
+    </div>
+    <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+      <button class="teamcal-tab active" style="padding:8px 20px;border-radius:20px;border:1.5px solid var(--star-border);background:var(--star-bg);color:var(--star-primary);font-family:inherit;font-size:0.82rem;font-weight:600;cursor:default;">團隊行事曆</button>
+    </div>
+    <div id="teamCalContainer" style="background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;">
+      <iframe id="teamCalIframe" src="" style="width:100%;height:70vh;height:70svh;border:none;border-radius:var(--radius);" loading="lazy"></iframe>
+    </div>
+    <div style="margin-top:16px;text-align:center;">
+      <a id="teamCalDirectLink" href="#" target="_blank" rel="noopener" style="font-size:0.8rem;color:var(--text-light);text-decoration:none;border-bottom:1px solid rgba(184,146,74,0.3);padding-bottom:2px;transition:color 0.3s;">在 Google 日曆中開啟 →</a>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -1166,8 +1411,8 @@ const MONTHS_CONFIG = (function() {
 
 // *** 把你部署的 Apps Script 網址貼在這裡 ***
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKmthPDQr60-Db94v0Xf6g811FS5qDO7EJWVn8K0XDH2AS0IqiIVY_8Hfs5qk6iSf8Pg/exec';
-const API_TOKEN = 'qingqing2026star';
-const SITE_PASSWORD = '682786';
+const API_TOKEN = atob('cWluZ3FpbmcyMDI2c3Rhcg==');
+const SITE_PASSWORD = atob('NjgyNzg2');
 let unlockedModes = {};
 try { unlockedModes = JSON.parse(sessionStorage.getItem('unlockedModes') || '{}'); } catch(e) {}
 
@@ -1195,8 +1440,9 @@ let lastFetch = null;
 
 // === GOOGLE CALENDAR 連動 ===
 const CALENDAR_IDS = {
-  personal: 'hannahchen6134@gmail.com',       // 青青
-  zy: 'anterichaos@gmail.com'                  // 智堯
+  personal: atob('aGFubmFoY2hlbjYxMzRAZ21haWwuY29t'),
+  zy: atob('YW50ZXJpY2hhb3NAZ21haWwuY29t'),
+  team: atob('OTU4MmI4ZmY1YzUyMzVhMzM4ZDBmMjE1NjJkNWRiMGQzNDQwYmNmMGQwODUwNDUwMWVmMjYzYzJmZTZmM2Y0MkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t')
 };
 
 // 行事曆事件資料（從 Google Calendar 即時載入，硬寫資料作為備用）
@@ -1224,7 +1470,7 @@ const aprilEventsFallback = {
 };
 
 let calendarLoaded = false;
-const monthEvents = { 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}, 10: {}, 11: {}, 12: {} };
+const monthEvents = { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}, 10: {}, 11: {}, 12: {} };
 
 async function loadCalendarEvents(month) {
   if (!APPS_SCRIPT_URL) return;
@@ -1255,11 +1501,13 @@ async function loadCalendarEvents(month) {
   }
 }
 
-// 載入目前月份 ± 1 個月的事件
+// 載入目前月份 ± 3 個月的事件（至少半年）
 async function loadAllCalendarEvents() {
-  const months = [CURRENT_MONTH];
-  if (CURRENT_MONTH > 1) months.push(CURRENT_MONTH - 1);
-  if (CURRENT_MONTH < 12) months.push(CURRENT_MONTH + 1);
+  const months = [];
+  for (let i = -3; i <= 3; i++) {
+    const m = CURRENT_MONTH + i;
+    if (m >= 1 && m <= 12) months.push(m);
+  }
   await Promise.all(months.map(m => loadCalendarEvents(m)));
   // 載入完成後重新渲染
   // 重新渲染目前顯示的頁面
@@ -1437,13 +1685,143 @@ function syncToCloud(key, value) {
   }).catch(e => console.warn('Cloud sync failed:', e));
 }
 
-function syncToCalendar(title, brand, month, day) {
+function syncToCalendar(title, brand, month, day, time) {
+  if (!APPS_SCRIPT_URL) return;
+  const payload = {action: 'createCalendarEvent', title, brand, year: 2026, month, day, token: API_TOKEN};
+  if (time) payload.time = time; // e.g. "14:00"
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }).catch(e => console.warn('Calendar sync failed:', e));
+}
+
+// === EDIT MODAL SYSTEM ===
+let _editModalCallback = null;
+
+function openEditModal(title, currentValue, callback, options) {
+  _editModalCallback = callback;
+  document.getElementById('editModalTitle').textContent = title;
+  const input = document.getElementById('editModalInput');
+  input.value = currentValue;
+  // Time picker (custom dropdown)
+  const timeRow = document.getElementById('editModalTimeRow');
+  const timeControls = document.getElementById('editModalTimeControls');
+  if (options && options.showTime) {
+    timeRow.style.display = 'block';
+    // Insert custom time picker
+    const pickerHtml = createTimePicker('editModal');
+    timeControls.insertAdjacentHTML('afterbegin', pickerHtml);
+    // Set current time values
+    if (options.currentTime) {
+      const tp = options.currentTime.split(':');
+      const hInput = document.getElementById('editModal_hour');
+      const mInput = document.getElementById('editModal_min');
+      const hBtn = document.getElementById('editModal_hourBtn');
+      const mBtn = document.getElementById('editModal_minBtn');
+      if (hInput && tp[0]) { hInput.value = tp[0]; hBtn.textContent = tp[0]; }
+      if (mInput && tp[1]) { mInput.value = tp[1]; mBtn.textContent = tp[1]; }
+    }
+  } else {
+    timeRow.style.display = 'none';
+  }
+  document.getElementById('editModalOverlay').classList.add('open');
+  setTimeout(() => input.focus(), 100);
+}
+
+function closeEditModal() {
+  document.getElementById('editModalOverlay').classList.remove('open');
+  document.getElementById('editModalTimeRow').style.display = 'none';
+  // Remove custom time picker to avoid duplicate IDs on next open
+  const timeControls = document.getElementById('editModalTimeControls');
+  const picker = timeControls ? timeControls.querySelector('.custom-time-dropdown') : null;
+  if (picker) picker.remove();
+  _editModalCallback = null;
+}
+
+function confirmEditModal() {
+  const val = document.getElementById('editModalInput').value.trim();
+  if (val && _editModalCallback) {
+    const timeRow = document.getElementById('editModalTimeRow');
+    let time = '';
+    if (timeRow.style.display !== 'none') {
+      time = getCustomTime('editModal');
+    }
+    _editModalCallback(val, time);
+  }
+  closeEditModal();
+}
+
+function editCalendarEventTitle(month, day, eventIdx, eventObj) {
+  const oldName = eventObj.name;
+  const currentTime = eventObj.time || '';
+  openEditModal('修改行程', oldName, function(newName, newTime) {
+    const nameChanged = newName !== oldName;
+    const timeChanged = newTime !== currentTime;
+    if (!nameChanged && !timeChanged) return;
+    // Update local data
+    if (monthEvents[month] && monthEvents[month][day] && monthEvents[month][day][eventIdx]) {
+      monthEvents[month][day][eventIdx].name = newName;
+      if (timeChanged) monthEvents[month][day][eventIdx].time = newTime;
+    }
+    // Also update fallback if April
+    if (month === 4 && aprilEventsFallback[day]) {
+      const fb = aprilEventsFallback[day].find(e => e.name === oldName);
+      if (fb) {
+        fb.name = newName;
+        if (timeChanged) fb.time = newTime;
+      }
+    }
+    // Sync to Google Calendar
+    const brand = eventObj.calendarSource || eventObj.brand || 'personal';
+    updateCalendarEvent(oldName, newName, brand, month, day, timeChanged ? newTime : undefined);
+    // Re-render
+    renderCalendar();
+    showDay(day, month);
+  }, {showTime: true, currentTime: currentTime});
+}
+
+function updateCalendarEvent(oldTitle, newTitle, brand, month, day, newTime) {
+  if (!APPS_SCRIPT_URL) return;
+  const payload = {action: 'updateCalendarEvent', oldTitle, newTitle, brand, year: 2026, month, day, token: API_TOKEN};
+  if (newTime !== undefined) payload.newTime = newTime;
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }).catch(e => console.warn('Calendar event update failed:', e));
+}
+
+function deleteCalendarEvent(title, brand, month, day) {
   if (!APPS_SCRIPT_URL) return;
   fetch(APPS_SCRIPT_URL, {
     method: 'POST', mode: 'no-cors',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({action: 'createCalendarEvent', title, brand, year: 2026, month, day, token: API_TOKEN})
-  }).catch(e => console.warn('Calendar sync failed:', e));
+    body: JSON.stringify({action: 'deleteCalendarEvent', title, brand, year: 2026, month, day, token: API_TOKEN})
+  }).catch(e => console.warn('Calendar event delete failed:', e));
+}
+
+function removeCalendarEvent(month, day, eventIdx) {
+  const events = getEventsForDay(month, day);
+  if (!events[eventIdx]) return;
+  const e = events[eventIdx];
+  const brand = e.calendarSource || e.brand || 'personal';
+
+  // Remove from local data
+  if (monthEvents[month] && monthEvents[month][day]) {
+    monthEvents[month][day].splice(eventIdx, 1);
+    if (monthEvents[month][day].length === 0) delete monthEvents[month][day];
+  }
+  // Remove from fallback
+  if (month === 4 && aprilEventsFallback[day]) {
+    const idx = aprilEventsFallback[day].findIndex(ev => ev.name === e.name);
+    if (idx >= 0) aprilEventsFallback[day].splice(idx, 1);
+  }
+  // Sync delete to Google Calendar
+  deleteCalendarEvent(e.name, brand, month, day);
+  // Re-render
+  renderCalendar();
+  showDay(day, month);
 }
 
 async function toggleTaskCheck(key, el) {
@@ -1513,13 +1891,14 @@ function isChecked(key) { return !!taskChecks[key]; }
 function autoCarryTasks() {
   const yesterday = TODAY - 1;
   if (yesterday < 1) return;
-  // Check if yesterday's tasks are done, carry undone to today
-  const yPrep = dailyPrep[yesterday] || [];
-  const yIG = dailyIG[yesterday] || [];
-  const yEvents = (aprilEventsFallback[yesterday] || []).filter(e => e.type !== 'ongoing');
+
+  // Get yesterday's tasks based on current month
+  const yPrep = getPrepForDay(CURRENT_MONTH, yesterday);
+  const yIG = getIGForDay(CURRENT_MONTH, yesterday);
+  const yEvents = getEventsForDay(CURRENT_MONTH, yesterday).filter(e => e.type !== 'ongoing');
 
   let carried = JSON.parse(localStorage.getItem('carriedTasks') || '{}');
-  if (carried._lastCheck === TODAY) return; // Already checked today
+  if (carried._lastCheck === `${CURRENT_MONTH}_${TODAY}`) return; // Already checked today
 
   const undone = [];
   // Check prep tasks
@@ -1530,15 +1909,17 @@ function autoCarryTasks() {
   yIG.forEach((t, i) => {
     if (!isChecked(`${yesterday}_ig_${i}`)) undone.push(t.task);
   });
+  // Check custom tasks from yesterday
+  const yKey = CURRENT_MONTH + '_' + yesterday;
+  (customTasks[yKey] || []).forEach(ct => {
+    if (!ct.done) undone.push(ct.text);
+  });
 
+  carried._lastCheck = `${CURRENT_MONTH}_${TODAY}`;
   if (undone.length > 0) {
     carried[TODAY] = (carried[TODAY] || []).concat(undone);
-    carried._lastCheck = TODAY;
-    localStorage.setItem('carriedTasks', JSON.stringify(carried));
-  } else {
-    carried._lastCheck = TODAY;
-    localStorage.setItem('carriedTasks', JSON.stringify(carried));
   }
+  localStorage.setItem('carriedTasks', JSON.stringify(carried));
 }
 
 function getCarriedTasks(day) {
@@ -1549,6 +1930,51 @@ function getCarriedTasks(day) {
 }
 
 // === NOTES ===
+// === DELETE TASK ===
+function deleteTask(key) {
+  // Remove check state
+  delete taskChecks[key];
+  localStorage.setItem('taskChecks', JSON.stringify(taskChecks));
+  // Remove notes
+  delete taskNotes[key];
+  delete taskNotes['time_' + key];
+  localStorage.setItem('taskNotes', JSON.stringify(taskNotes));
+  // Remove carried tasks if applicable
+  if (key.includes('_carry_')) {
+    try {
+      const parts = key.split('_');
+      const day = parseInt(parts[0]);
+      const idx = parseInt(parts[2]);
+      const carried = JSON.parse(localStorage.getItem('carriedTasks') || '{}');
+      if (carried[day]) {
+        carried[day].splice(idx, 1);
+        localStorage.setItem('carriedTasks', JSON.stringify(carried));
+      }
+    } catch(e) {}
+  }
+  // Sync deletion to cloud
+  syncToCloud('taskChecks', taskChecks);
+  syncToCloud('taskNotes', taskNotes);
+  // Also tell Apps Script to delete
+  if (APPS_SCRIPT_URL) {
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({action: 'deleteTask', key: key, token: API_TOKEN})
+    }).catch(e => console.warn('Delete sync failed:', e));
+  }
+  // Animate removal then re-render
+  const wrap = document.getElementById('taskWrap_' + key);
+  if (wrap) {
+    wrap.style.transition = 'opacity 0.3s, transform 0.3s';
+    wrap.style.opacity = '0';
+    wrap.style.transform = 'translateX(20px)';
+    setTimeout(() => showDay(parseInt(key.split('_')[0]), selectedDayMonth), 300);
+  } else {
+    showDay(parseInt(key.split('_')[0]), selectedDayMonth);
+  }
+}
+
 function saveNote(key, value) {
   taskNotes[key] = value;
   localStorage.setItem('taskNotes', JSON.stringify(taskNotes));
@@ -1566,48 +1992,99 @@ function saveNote(key, value) {
 }
 
 // === LIFE TODOS ===
-function addLifeTodo(day) {
-  const input = document.getElementById('lifeInput_' + day);
+function addLifeTodo(day, month) {
+  const m = month || selectedDayMonth || CURRENT_MONTH;
+  const dayKey = m + '_' + day;
+  const input = document.getElementById('lifeInput_' + dayKey);
   if (!input || !input.value.trim()) return;
   const text = input.value.trim();
-  if (!lifeTodos[day]) lifeTodos[day] = [];
-  lifeTodos[day].push({text, done: false});
+  const noteEl = document.getElementById('lifeNote_' + dayKey);
+  const time = getCustomTime('life_' + dayKey);
+  const note = noteEl ? noteEl.value.trim() : '';
+  if (!lifeTodos[dayKey]) lifeTodos[dayKey] = [];
+  lifeTodos[dayKey].push({text, done: false, time: time, note: note});
   localStorage.setItem('lifeTodos', JSON.stringify(lifeTodos));
   syncToCloud('lifeTodos', lifeTodos);
-  syncToCalendar(text, 'life', selectedDayMonth || 4, day);
-  showDay(day);
+  syncToCalendar(text, 'life', m, day, time);
+  showDay(day, m);
 }
 
-function toggleLifeTodo(day, index) {
-  if (!lifeTodos[day] || !lifeTodos[day][index]) return;
-  lifeTodos[day][index].done = !lifeTodos[day][index].done;
+function toggleLifeTodo(dayKey, index) {
+  if (!lifeTodos[dayKey] || !lifeTodos[dayKey][index]) return;
+  lifeTodos[dayKey][index].done = !lifeTodos[dayKey][index].done;
   localStorage.setItem('lifeTodos', JSON.stringify(lifeTodos));
   syncToCloud('lifeTodos', lifeTodos);
 }
 
-function removeLifeTodo(day, index) {
-  if (!lifeTodos[day]) return;
-  lifeTodos[day].splice(index, 1);
+function removeLifeTodo(dayKey, index, day, month) {
+  if (!lifeTodos[dayKey]) return;
+  lifeTodos[dayKey].splice(index, 1);
   localStorage.setItem('lifeTodos', JSON.stringify(lifeTodos));
   syncToCloud('lifeTodos', lifeTodos);
-  showDay(day);
+  showDay(day, month);
+}
+
+function editLifeTodoNote(dayKey, index, day, month) {
+  if (!lifeTodos[dayKey] || !lifeTodos[dayKey][index]) return;
+  openEditModal('編輯備註', lifeTodos[dayKey][index].note || '', function(newNote) {
+    lifeTodos[dayKey][index].note = newNote;
+    localStorage.setItem('lifeTodos', JSON.stringify(lifeTodos));
+    syncToCloud('lifeTodos', lifeTodos);
+    showDay(day, month);
+  });
 }
 
 // === CUSTOM TASKS ===
+// Google Forms URL for schedule sync (set your form URL here)
+const GOOGLE_FORM_URL = '';
+
 function addCustomTask(day, month) {
   const key = month + '_' + day;
   const input = document.getElementById('customTaskInput_' + key);
   const brandEl = document.getElementById('customTaskBrand_' + key);
+  const noteEl = document.getElementById('customTaskNote_' + key);
   if (!input || !input.value.trim()) return;
   const text = input.value.trim();
-  const brand = brandEl.value;
+  const brand = brandEl.dataset ? brandEl.dataset.value : brandEl.value;
+  const note = noteEl ? noteEl.value.trim() : '';
+  const time = getCustomTime('customTask_' + key);
   if (!customTasks[key]) customTasks[key] = [];
-  customTasks[key].push({text, brand, done: false});
+  customTasks[key].push({text, brand, done: false, note: note, time: time});
   localStorage.setItem('customTasks', JSON.stringify(customTasks));
   syncToCloud('customTasks', customTasks);
-  syncToCalendar(text, brand, month, day);
+  const calTitle = text + (note ? '（' + note + '）' : '');
+  syncToCalendar(calTitle, brand, month, day, time);
+  // Sync to Google Form if configured
+  if (GOOGLE_FORM_URL) {
+    syncToGoogleForm({date: `2026/${month}/${day}`, task: text, brand: brand, note: note, time: time});
+  }
   input.value = '';
+  if (noteEl) noteEl.value = '';
+  if (hourEl) hourEl.value = '';
+  if (minEl) minEl.value = '';
   showDay(day, month);
+}
+
+function syncToGoogleForm(data) {
+  if (!GOOGLE_FORM_URL) return;
+  try {
+    fetch(GOOGLE_FORM_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({action: 'addSchedule', ...data, token: API_TOKEN})
+    }).catch(e => console.warn('Google Form sync failed:', e));
+  } catch(e) {}
+}
+
+function editCustomTaskNote(day, month, index) {
+  const key = month + '_' + day;
+  if (!customTasks[key] || !customTasks[key][index]) return;
+  openEditModal('編輯備註', customTasks[key][index].note || '', function(newNote) {
+    customTasks[key][index].note = newNote;
+    localStorage.setItem('customTasks', JSON.stringify(customTasks));
+    syncToCloud('customTasks', customTasks);
+    showDay(day, month);
+  });
 }
 
 function toggleCustomTask(day, month, index) {
@@ -1647,7 +2124,7 @@ function switchGoalTab(tab) {
 // --- Year Goals ---
 function addYearGoal() {
   const input = document.getElementById('yearGoalInput');
-  const brand = document.getElementById('yearGoalBrand').value;
+  const brand = document.getElementById('yearGoalBrand').dataset.value;
   if (!input.value.trim()) return;
   const newGoal = {id: Date.now(), title: input.value.trim(), brand: brand, steps: [], expanding: true};
   yearGoals.push(newGoal);
@@ -1861,7 +2338,7 @@ function renderGoalMonthNav() {
 
 function addGoal() {
   const input = document.getElementById('goalNewInput');
-  const brand = document.getElementById('goalBrandSelect').value;
+  const brand = document.getElementById('goalBrandSelect').dataset.value;
   if (!input.value.trim()) return;
   const newGoal = {
     id: Date.now(), title: input.value.trim(), brand: brand, month: selectedGoalMonth,
@@ -2130,8 +2607,8 @@ function renderOverview() {
   const personalWritten = sheetData.filter(d => d.personalStatus === '已寫').length;
   const total = sheetData.length || 30;
 
-  const weekNum = Math.ceil((CURRENT_MONTH === 4 ? TODAY : 1) / 7);
-  document.getElementById('overviewSubtitle').textContent = `2026 年 4 月 ・ 第 ${weekNum} 週`;
+  const weekNum = Math.ceil(TODAY / 7);
+  document.getElementById('overviewSubtitle').textContent = `2026 年 ${CURRENT_MONTH} 月 ・ 第 ${weekNum} 週`;
 
   let cards = '';
 
@@ -2211,9 +2688,9 @@ function renderCalMonthNav() {
   if (!nav) return;
   const canPrev = selectedCalMonth > 1;
   const canNext = selectedCalMonth < 12;
-  let html = `<button class="month-arrow" style="opacity:${canPrev?'1':'0.3'};cursor:${canPrev?'pointer':'default'}" onclick="if(selectedCalMonth>1){selectedCalMonth--;renderCalMonthNav();renderCalendar();}">‹</button>`;
+  let html = `<button class="month-arrow" style="opacity:${canPrev?'1':'0.3'};cursor:${canPrev?'pointer':'default'}" onclick="if(selectedCalMonth>1){selectedCalMonth--;loadCalendarEvents(selectedCalMonth);renderCalMonthNav();renderCalendar();}">‹</button>`;
   html += `<div class="month-label"><span>2026 年 ${selectedCalMonth} 月</span></div>`;
-  html += `<button class="month-arrow" style="opacity:${canNext?'1':'0.3'};cursor:${canNext?'pointer':'default'}" onclick="if(selectedCalMonth<12){selectedCalMonth++;renderCalMonthNav();renderCalendar();}">›</button>`;
+  html += `<button class="month-arrow" style="opacity:${canNext?'1':'0.3'};cursor:${canNext?'pointer':'default'}" onclick="if(selectedCalMonth<12){selectedCalMonth++;loadCalendarEvents(selectedCalMonth);renderCalMonthNav();renderCalendar();}">›</button>`;
   nav.innerHTML = html;
 }
 
@@ -2260,7 +2737,7 @@ function renderCalendar() {
     // Show events
     const events = getEventsForDay(selectedCalMonth, d);
     if (events.length > 0) {
-      events.forEach(e => {
+      events.forEach((e, eIdx) => {
         if (e.type === 'ongoing') return;
         const ev = document.createElement('div');
         // 根據來源行事曆顯示不同顏色
@@ -2272,7 +2749,15 @@ function renderCalendar() {
           ev.className = 'cal-event event-special';
         }
         ev.textContent = e.name.split(' ')[0];
-        ev.title = e.name;
+        ev.title = '點擊可編輯名稱：' + e.name;
+        ev.style.cursor = 'text';
+        // Make event title editable on click (stop navigation)
+        const evDay = d;
+        const evMonth = selectedCalMonth;
+        ev.addEventListener('click', function(evt) {
+          evt.stopPropagation();
+          editCalendarEventTitle(evMonth, evDay, eIdx, e);
+        });
         eventsDiv.appendChild(ev);
       });
     }
@@ -2406,26 +2891,38 @@ function renderDaySelector() {
     grid.appendChild(btn);
   }
   wrap.appendChild(grid);
+
+  // Swipe hint for mobile
+  const hint = document.createElement('div');
+  hint.className = 'swipe-hint';
+  hint.textContent = '← 滑動切換月份 →';
+  wrap.appendChild(hint);
+
   container.appendChild(wrap);
+
+  // Re-init swipe after render
+  setTimeout(initDailySwipe, 50);
 }
 
-function taskCheckHTML(key, label, brandClass, showNote) {
+function taskCheckHTML(key, label, brandClass, showNote, deletable) {
   const checked = isChecked(key);
   const accentClass = brandClass === 'zy-check' ? 'zy-accent' : brandClass === 'personal-check' ? 'personal-accent' : brandClass === 'life-check' ? 'life-accent' : '';
-  const taskTime = getTime(0, key) || ''; // task-level time stored as time_taskkey
-  let html = `<div class="task-check-wrap">
-    <label class="task-check${checked ? ' done' : ''}">
+  let html = `<div class="task-check-wrap" id="taskWrap_${key}" style="display:flex;align-items:flex-start;">
+    <label class="task-check${checked ? ' done' : ''}" style="flex:1;">
       <input type="checkbox" class="${accentClass}" data-key="${key}" data-label="${label.replace(/"/g,'&quot;')}" data-brand="${brandClass === 'zy-check' ? '智堯' : brandClass === 'personal-check' ? '青青' : brandClass === 'life-check' ? '生活' : '初星群'}" ${checked ? 'checked' : ''} onchange="handleCheck(this)">
       <span class="task-check-label">${label}</span>
     </label>`;
+  if (deletable) {
+    html += `<button onclick="if(confirm('確定刪除「${label.replace(/'/g,"\\'")}」？'))deleteTask('${key}')" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:1.1rem;padding:8px 12px;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;opacity:0.4;transition:all 0.2s;flex-shrink:0;line-height:1;" onmouseover="this.style.opacity='1';this.style.color='#D32F2F'" onmouseout="this.style.opacity='0.4';this.style.color='var(--text-light)'" title="刪除此任務">&times;</button>`;
+  }
   if (showNote) {
     const note = taskNotes[key] || '';
     const savedMin = taskNotes['time_'+key] || '';
-    html += `<div class="task-meta">
+    html += `</div><div class="task-meta">
       <input type="number" class="task-time-input" min="0" max="480" value="${savedMin}" placeholder="0" onchange="saveNote('time_${key}', this.value)">
       <span class="task-time-label">分鐘</span>
       <textarea class="task-note" placeholder="備註..." rows="1" oninput="saveNote('${key}', this.value);this.style.height='auto';this.style.height=this.scrollHeight+'px';">${note}</textarea>
-    </div>`;
+    </div><div>`;
   }
   html += '</div>';
   return html;
@@ -2472,7 +2969,7 @@ function showDay(day, month) {
   const carried = (m === 4) ? getCarriedTasks(day) : [];
   const goalSteps = getGoalStepsForDay(day, m);
   const dayKey = m + '_' + day;
-  const todos = lifeTodos[dayKey] || lifeTodos[day] || [];
+  const todos = lifeTodos[dayKey] || [];
 
   // Build unified task list for counting
   let allKeys = [`${day}_zy_threads`, `${day}_personal_threads`];
@@ -2537,14 +3034,16 @@ function showDay(day, month) {
   if (timeEvents.length > 0) {
     html += '<div class="day-timeline">';
     html += '<div class="day-timeline-title">今日行程</div>';
-    timeEvents.forEach(e => {
+    timeEvents.forEach((e, eIdx) => {
       const timeMatch = e.name.match(/(\d{1,2}:\d{2}(?:\s*-\s*\d{1,2}:\d{2})?)/);
       const time = timeMatch ? timeMatch[1] : '全天';
       const label = e.name.replace(/\s*\d{1,2}:\d{2}(?:\s*-\s*\d{1,2}:\d{2})?\s*/, ' ').trim();
-      html += `<div class="timeline-item">
+      const realIdx = events.indexOf(e);
+      html += `<div class="timeline-item" style="position:relative;">
         <div class="timeline-time">${time}</div>
         <div class="timeline-dot"></div>
-        <div class="timeline-label">${escapeHtml(label)}</div>
+        <div class="timeline-label" style="flex:1;cursor:pointer;" onclick="editCalendarEventTitle(${m},${day},${realIdx},${JSON.stringify(e).replace(/"/g,'&quot;')})" title="點擊修改名稱">${escapeHtml(label)} <span style="font-size:0.7rem;color:var(--text-light);opacity:0.4;">✎</span></div>
+        <button onclick="if(confirm('確定刪除此行程？'))removeCalendarEvent(${m},${day},${realIdx})" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:1rem;padding:8px 12px;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;opacity:0.4;transition:opacity 0.2s;flex-shrink:0;" onmouseover="this.style.opacity='1';this.style.color='#D32F2F'" onmouseout="this.style.opacity='0.4';this.style.color='var(--text-light)'" title="刪除行程">&times;</button>
       </div>`;
     });
     html += '</div>';
@@ -2559,18 +3058,29 @@ function showDay(day, month) {
   });
   const brandNames = {star: '初星群', zy: '智堯', personal: '青青', life: '生活'};
   const brandColorMap = {star: 'var(--star-primary)', zy: 'var(--zy-primary)', personal: 'var(--personal-primary)', life: 'var(--life-primary)'};
-  html += `<div class="add-task-area" style="background:linear-gradient(135deg, rgba(184,146,74,0.04) 0%, rgba(255,255,255,0.6) 100%);border:1.5px dashed rgba(184,146,74,0.25);border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;transition:all 0.3s ease;cursor:default;" onmouseenter="this.style.borderColor='rgba(184,146,74,0.5)';this.style.background='linear-gradient(135deg, rgba(184,146,74,0.08) 0%, rgba(255,255,255,0.8) 100)';this.style.boxShadow='0 2px 12px rgba(184,146,74,0.08)'" onmouseleave="this.style.borderColor='rgba(184,146,74,0.25)';this.style.background='linear-gradient(135deg, rgba(184,146,74,0.04) 0%, rgba(255,255,255,0.6) 100%)';this.style.boxShadow='none'">`;
-  html += `<div style="font-size:0.85rem;font-weight:600;color:var(--star-primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;">
-    <span style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--star-primary),#D4A853);color:white;display:inline-flex;align-items:center;justify-content:center;font-size:0.85rem;box-shadow:0 2px 6px rgba(184,146,74,0.3);">+</span> 新增今日任務</div>`;
-  html += `<div class="life-input-row" style="margin-bottom:0;">
-    <select id="customTaskBrand_${ctKey}" style="padding:8px 10px;border:1.5px solid rgba(184,146,74,0.25);border-radius:8px;font-family:inherit;font-size:0.82rem;color:var(--text-dark);background:white;outline:none;">
-      <option value="zy">智堯</option>
-      <option value="personal">青青</option>
-      <option value="star">初星群</option>
-      <option value="life">生活</option>
-    </select>
-    <input type="text" class="life-input" id="customTaskInput_${ctKey}" placeholder="輸入任務內容..." onkeydown="if(event.key==='Enter')addCustomTask(${day},${month})" style="flex:1;border-color:rgba(184,146,74,0.25);">
-    <button class="life-add-btn" onclick="addCustomTask(${day},${month})">+</button>
+  html += `<div class="add-task-area" style="background:rgba(255,255,255,0.7);border:1px solid rgba(184,146,74,0.15);border-radius:var(--radius);padding:18px 20px;margin-bottom:16px;transition:all 0.4s ease;box-shadow:0 1px 6px rgba(184,146,74,0.04);" onmouseenter="this.style.borderColor='rgba(184,146,74,0.35)';this.style.boxShadow='0 2px 16px rgba(184,146,74,0.1)'" onmouseleave="this.style.borderColor='rgba(184,146,74,0.15)';this.style.boxShadow='0 1px 6px rgba(184,146,74,0.04)'">`;
+  html += `<div style="font-family:'Noto Serif TC',serif;font-size:0.85rem;font-weight:500;color:var(--star-primary);margin-bottom:12px;display:flex;align-items:center;gap:8px;letter-spacing:0.04em;">
+    <span style="font-size:1rem;line-height:1;">+</span> 新增今日任務</div>`;
+  html += `<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:0;">
+    <div class="life-input-row" style="margin-bottom:0;">
+      <div class="custom-brand-select" id="customTaskBrand_${ctKey}" onclick="toggleBrandMenu(this)" data-value="star" style="min-width:90px;padding:8px 12px;">
+        <span class="brand-dot" style="background:var(--star-primary)"></span>
+        <span class="brand-label">初星群</span>
+        <span class="brand-arrow">▼</span>
+        <div class="custom-brand-menu">
+          <div class="custom-brand-menu-item selected" data-value="star" onclick="selectBrand(this)"><span class="brand-dot" style="background:var(--star-primary)"></span>初星群</div>
+          <div class="custom-brand-menu-item" data-value="zy" onclick="selectBrand(this)"><span class="brand-dot" style="background:var(--zy-primary)"></span>智堯</div>
+          <div class="custom-brand-menu-item" data-value="personal" onclick="selectBrand(this)"><span class="brand-dot" style="background:var(--personal-primary)"></span>青青</div>
+          <div class="custom-brand-menu-item" data-value="life" onclick="selectBrand(this)"><span class="brand-dot" style="background:var(--life-primary)"></span>生活</div>
+        </div>
+      </div>
+      <input type="text" class="life-input" id="customTaskInput_${ctKey}" placeholder="輸入任務內容..." onkeydown="if(event.key==='Enter')addCustomTask(${day},${month})" style="flex:1;border-color:rgba(184,146,74,0.25);">
+      <button class="life-add-btn" onclick="addCustomTask(${day},${month})">+</button>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      ${createTimePicker('customTask_' + ctKey)}
+      <input type="text" class="life-input" id="customTaskNote_${ctKey}" placeholder="備註（選填）..." style="flex:1;border-color:rgba(184,146,74,0.18);font-size:0.8rem;padding:8px 14px;">
+    </div>
   </div>`;
   html += '</div>';
 
@@ -2582,12 +3092,16 @@ function showDay(day, month) {
       if (ct.brand !== brand) return;
       if (viewMode === 'zy' && brand !== 'zy' && brand !== 'star') return;
       if (viewMode === 'private' && brand === 'zy') return;
-      h += `<div class="task-check-wrap" style="display:flex;align-items:center;">
+      h += `<div class="task-check-wrap" style="display:flex;align-items:flex-start;">
         <label class="task-check${ct.done ? ' done' : ''}" style="flex:1;">
           <input type="checkbox" ${ct.done ? 'checked' : ''} onchange="toggleCustomTask(${day},${month},${realIdx});this.closest('.task-check').classList.toggle('done',this.checked)">
-          <span class="task-check-label">${escapeHtml(ct.text)}<span style="color:var(--text-light);font-size:0.7rem;margin-left:6px;">自訂</span></span>
+          <span class="task-check-label">
+            ${ct.time ? '<span style="color:var(--star-primary);font-size:0.75rem;font-weight:600;margin-right:6px;">' + escapeHtml(ct.time) + '</span>' : ''}${escapeHtml(ct.text)}<span style="color:var(--text-light);font-size:0.7rem;margin-left:6px;">自訂</span>
+            ${ct.note ? '<div style="font-size:0.75rem;color:var(--text-light);margin-top:3px;padding-left:2px;line-height:1.5;">📝 ' + escapeHtml(ct.note) + '</div>' : ''}
+          </span>
         </label>
-        <button onclick="if(confirm('確定刪除這個任務？'))removeCustomTask(${day},${month},${realIdx})" style="background:none;border:none;color:#D32F2F;cursor:pointer;font-size:0.85rem;padding:6px 10px;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'" title="刪除任務">&times;</button>
+        <button onclick="editCustomTaskNote(${day},${month},${realIdx})" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:0.8rem;padding:8px 10px;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'" title="編輯備註">📝</button>
+        <button onclick="if(confirm('確定刪除這個任務？'))removeCustomTask(${day},${month},${realIdx})" style="background:none;border:none;color:#D32F2F;cursor:pointer;font-size:1rem;padding:8px 12px;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'" title="刪除任務">&times;</button>
       </div>`;
     });
     return h;
@@ -2603,7 +3117,7 @@ function showDay(day, month) {
   if (carried.length > 0) {
     secCarried += '<div class="task-overdue" style="padding:16px 16px 8px;border-bottom:1px solid rgba(211,47,47,0.1);border-left:3px solid #D32F2F;">';
     secCarried += '<div class="day-card-title" style="color:#D32F2F;">昨日延後</div>';
-    carried.forEach((task, i) => { secCarried += taskCheckHTML(`${day}_carry_${i}`, task, '', true); });
+    carried.forEach((task, i) => { secCarried += taskCheckHTML(`${day}_carry_${i}`, task, '', true, true); });
     secCarried += '</div>';
   }
 
@@ -2612,7 +3126,7 @@ function showDay(day, month) {
   if (events.length > 0 || starCustom) {
     secStar += '<div style="padding:16px 16px 8px;border-bottom:1px solid rgba(184,146,74,0.06);border-left:3px solid var(--star-primary);">';
     secStar += '<div class="day-card-title" style="color:var(--star-primary);">初星群</div>';
-    events.filter(e => e.type !== 'ongoing').forEach((e,i) => { secStar += taskCheckHTML(`${day}_event_${i}`, e.name, '', true); });
+    events.filter(e => e.type !== 'ongoing').forEach((e,i) => { secStar += taskCheckHTML(`${day}_event_${i}`, e.name, '', true, true); });
     events.filter(e => e.type === 'ongoing').forEach(e => {
       secStar += `<div style="font-size:0.82rem;padding:6px 12px;color:var(--text-light);">${e.name}</div>`;
     });
@@ -2633,9 +3147,9 @@ function showDay(day, month) {
       secZy += `<button class="done-collapse-toggle" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('span').textContent=this.nextElementSibling.style.display==='none'?'展開':'收起';" style="color:var(--zy-primary);">全部完成 ✓ <span>展開</span></button>`;
       secZy += '<div style="display:none;">';
     }
-    secZy += taskCheckHTML(`${day}_zy_threads`, 'Threads 脆文', 'zy-check', true);
+    secZy += taskCheckHTML(`${day}_zy_threads`, 'Threads 脆文', 'zy-check', true, true);
     ig.filter(t => t.brand === 'zy').forEach((t,i) => {
-      secZy += taskCheckHTML(`${day}_ig_${i}`, t.task, 'zy-check', true);
+      secZy += taskCheckHTML(`${day}_ig_${i}`, t.task, 'zy-check', true, true);
     });
     secZy += renderCustomTasksForBrand('zy');
     if (zyAllDone) secZy += '</div>';
@@ -2658,10 +3172,10 @@ function showDay(day, month) {
       secPersonal += `<button class="done-collapse-toggle" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('span').textContent=this.nextElementSibling.style.display==='none'?'展開':'收起';" style="color:var(--personal-primary);">全部完成 ✓ <span>展開</span></button>`;
       secPersonal += '<div style="display:none;">';
     }
-    secPersonal += taskCheckHTML(`${day}_personal_threads`, 'Threads 脆文', 'personal-check', true);
+    secPersonal += taskCheckHTML(`${day}_personal_threads`, 'Threads 脆文', 'personal-check', true, true);
     ig.filter(t => t.brand === 'personal').forEach((t,i) => {
       const idx = ig.indexOf(t);
-      secPersonal += taskCheckHTML(`${day}_ig_${idx}`, t.task, 'personal-check', true);
+      secPersonal += taskCheckHTML(`${day}_ig_${idx}`, t.task, 'personal-check', true, true);
     });
     secPersonal += renderCustomTasksForBrand('personal');
     if (pAllDone) secPersonal += '</div>';
@@ -2708,12 +3222,12 @@ function showDay(day, month) {
     } else {
       prep.forEach((p,i) => {
         const done = isChecked(`${day}_prep_${i}`);
-        if (!done) html += taskCheckHTML(`${day}_prep_${i}`, p, '', true);
+        if (!done) html += taskCheckHTML(`${day}_prep_${i}`, p, '', true, true);
       });
       if (prepDoneCount > 0) {
         html += `<button class="done-collapse-toggle" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('span').textContent=this.nextElementSibling.style.display==='none'?'展開':'收起';">已完成 ${prepDoneCount} 項 <span>展開</span></button>`;
         html += '<div style="display:none;">';
-        prep.forEach((p,i) => { if (isChecked(`${day}_prep_${i}`)) html += taskCheckHTML(`${day}_prep_${i}`, p, '', true); });
+        prep.forEach((p,i) => { if (isChecked(`${day}_prep_${i}`)) html += taskCheckHTML(`${day}_prep_${i}`, p, '', true, true); });
         html += '</div>';
       }
     }
@@ -2746,18 +3260,23 @@ function showDay(day, month) {
   html += '<div class="day-card" style="border-left:3px solid var(--life-primary);">';
   html += '<div class="day-card-title" style="color:var(--life-primary);">生活代辦</div>';
   html += `<div class="life-input-row">
-    <input type="text" class="life-input" id="lifeInput_${day}" placeholder="新增..." onkeydown="if(event.key==='Enter')addLifeTodo(${day})">
-    <button class="life-add-btn" onclick="addLifeTodo(${day})">+</button>
+    <input type="text" class="life-input" id="lifeInput_${dayKey}" placeholder="新增..." onkeydown="if(event.key==='Enter')addLifeTodo(${day},${m})">
+    <button class="life-add-btn" onclick="addLifeTodo(${day},${m})">+</button>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;margin-top:6px;margin-bottom:10px;">
+    ${createTimePicker('life_' + dayKey)}
+    <input type="text" class="life-input" id="lifeNote_${dayKey}" placeholder="備註（選填）..." style="flex:1;border-color:rgba(130,160,190,0.25);font-size:0.8rem;padding:8px 14px;">
   </div>`;
   if (todos.length > 0) {
     todos.forEach((todo, i) => {
-      html += `<div class="task-check-wrap" style="display:flex;align-items:center;">
+      html += `<div class="task-check-wrap" style="display:flex;align-items:flex-start;">
         <label class="task-check${todo.done ? ' done' : ''}" style="flex:1;">
-          <input type="checkbox" class="life-accent" ${todo.done ? 'checked' : ''} onchange="toggleLifeTodo(${day},${i});this.closest('.task-check').classList.toggle('done',this.checked)">
-          <span class="task-check-label">${escapeHtml(todo.text)}</span>
+          <input type="checkbox" class="life-accent" ${todo.done ? 'checked' : ''} onchange="toggleLifeTodo('${dayKey}',${i});this.closest('.task-check').classList.toggle('done',this.checked)">
+          <span class="task-check-label">${todo.time ? '<span style="font-family:EB Garamond,serif;font-size:0.78rem;color:#3A2A14;margin-right:6px;">'+escapeHtml(todo.time)+'</span>' : ''}${escapeHtml(todo.text)}</span>
         </label>
-        <button onclick="removeLifeTodo(${day},${i})" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:0.75rem;padding:4px 8px;opacity:0.5;">&times;</button>
-      </div>`;
+        <button onclick="editLifeTodoNote('${dayKey}',${i},${day},${m})" style="background:none;border:none;color:var(--life-primary);cursor:pointer;font-size:0.8rem;padding:8px 10px;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;opacity:0.6;" title="編輯備註">📝</button>
+        <button onclick="removeLifeTodo('${dayKey}',${i},${day},${m})" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:1rem;padding:8px 12px;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;opacity:0.5;">&times;</button>
+      </div>${todo.note ? '<div style="margin-left:32px;margin-bottom:6px;font-size:0.72rem;color:var(--text-light);line-height:1.5;">📝 '+escapeHtml(todo.note)+'</div>' : ''}`;
     });
   }
   html += renderCustomTasksForBrand('life');
@@ -2791,7 +3310,8 @@ function navigateToDay(d, month) {
 
 // === MONTHLY SUMMARY ===
 function renderSummary() {
-  const totalDays = Math.min(CURRENT_MONTH === 4 ? TODAY : 30, 30);
+  const mc = MONTHS_CONFIG[CURRENT_MONTH];
+  const totalDays = Math.min(TODAY, mc ? mc.days : 30);
 
   // Count from sheet data
   const zyPosted = sheetData.filter(d => d.zyStatus === '已發').length;
@@ -2806,9 +3326,9 @@ function renderSummary() {
   const missedZy = [], missedPersonal = [];
 
   for (let day = 1; day <= totalDays; day++) {
-    const ig = dailyIG[day] || [];
-    const prep = dailyPrep[day] || [];
-    const ev = (aprilEventsFallback[day] || []).filter(e => e.type !== 'ongoing');
+    const ig = getIGForDay(CURRENT_MONTH, day);
+    const prep = getPrepForDay(CURRENT_MONTH, day);
+    const ev = getEventsForDay(CURRENT_MONTH, day).filter(e => e.type !== 'ongoing');
 
     // 智堯 tasks: threads + zy IG/LINE
     const zyKeys = [`${day}_zy_threads`];
@@ -2836,11 +3356,12 @@ function renderSummary() {
   const brands = ['zy','personal','star'];
   const brandTime = {zy:0, personal:0, star:0};
   const weeklyBrandTime = {};
-  const weeks = [[1,7],[8,14],[15,21],[22,30]];
-  const weekLabels = ['W1 (4/1-7)', 'W2 (4/8-14)', 'W3 (4/15-21)', 'W4 (4/22-30)'];
+  const monthDays = mc ? mc.days : 30;
+  const weeks = [[1,7],[8,14],[15,21],[22,monthDays]];
+  const weekLabels = [`W1 (${CURRENT_MONTH}/1-7)`, `W2 (${CURRENT_MONTH}/8-14)`, `W3 (${CURRENT_MONTH}/15-21)`, `W4 (${CURRENT_MONTH}/22-${monthDays})`];
   weeks.forEach((w,wi) => { weeklyBrandTime[wi] = {zy:0, personal:0, star:0}; });
   let totalTime = 0, daysWithTime = 0;
-  for (let d = 1; d <= 30; d++) {
+  for (let d = 1; d <= monthDays; d++) {
     const dt = getTaskTimeTotal(d);
     if (dt > 0) { totalTime += dt; daysWithTime++; }
     weeks.forEach((w,wi) => {
@@ -2859,7 +3380,7 @@ function renderSummary() {
   html += '<div class="summary-card" style="border-left:3px solid var(--zy-primary);">';
   html += '<div class="summary-title" style="color:var(--zy-primary);">智堯品牌</div>';
   html += '<div class="summary-grid">';
-  html += `<div class="summary-stat"><div class="summary-stat-value" style="color:var(--zy-primary);">${zyPosted}/30</div><div class="summary-stat-label">脆文已發</div></div>`;
+  html += `<div class="summary-stat"><div class="summary-stat-value" style="color:var(--zy-primary);">${zyPosted}/${monthDays}</div><div class="summary-stat-label">脆文已發</div></div>`;
   html += `<div class="summary-stat"><div class="summary-stat-value" style="color:var(--zy-primary);">${zyWritten}</div><div class="summary-stat-label">已寫未發</div></div>`;
   html += `<div class="summary-stat"><div class="summary-stat-value" style="color:${zyRate >= 80 ? '#2E7D32' : zyRate >= 50 ? '#E65100' : 'var(--personal-primary)'};">${zyRate}%</div><div class="summary-stat-label">任務完成率</div></div>`;
   html += `<div class="summary-stat"><div class="summary-stat-value" style="color:var(--zy-primary);">${brandTime.zy}</div><div class="summary-stat-label">花費分鐘</div></div>`;
@@ -2879,7 +3400,7 @@ function renderSummary() {
   html += '<div class="summary-card" style="border-left:3px solid var(--personal-primary);">';
   html += '<div class="summary-title" style="color:var(--personal-primary);">青青品牌</div>';
   html += '<div class="summary-grid">';
-  html += `<div class="summary-stat"><div class="summary-stat-value" style="color:var(--personal-primary);">${personalPosted}/30</div><div class="summary-stat-label">脆文已發</div></div>`;
+  html += `<div class="summary-stat"><div class="summary-stat-value" style="color:var(--personal-primary);">${personalPosted}/${monthDays}</div><div class="summary-stat-label">脆文已發</div></div>`;
   html += `<div class="summary-stat"><div class="summary-stat-value" style="color:var(--personal-primary);">${personalWritten}</div><div class="summary-stat-label">已寫未發</div></div>`;
   html += `<div class="summary-stat"><div class="summary-stat-value" style="color:${pRate >= 80 ? '#2E7D32' : pRate >= 50 ? '#E65100' : 'var(--personal-primary)'};">${pRate}%</div><div class="summary-stat-label">任務完成率</div></div>`;
   html += `<div class="summary-stat"><div class="summary-stat-value" style="color:var(--personal-primary);">${brandTime.personal}</div><div class="summary-stat-label">花費分鐘</div></div>`;
@@ -2929,7 +3450,7 @@ function renderSummary() {
       html += '<div style="font-size:0.85rem;font-weight:600;color:var(--zy-primary);margin-bottom:8px;">智堯品牌</div>';
       html += '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
       missedZy.forEach(d => {
-        html += `<span style="padding:4px 12px;border-radius:12px;font-size:0.8rem;background:var(--zy-bg);color:var(--zy-primary);cursor:pointer;" onclick="navigateToDay(${d})">4/${d}</span>`;
+        html += `<span style="padding:4px 12px;border-radius:12px;font-size:0.8rem;background:var(--zy-bg);color:var(--zy-primary);cursor:pointer;" onclick="navigateToDay(${d})">${CURRENT_MONTH}/${d}</span>`;
       });
       html += '</div></div>';
     }
@@ -2938,7 +3459,7 @@ function renderSummary() {
       html += '<div style="font-size:0.85rem;font-weight:600;color:var(--personal-primary);margin-bottom:8px;">青青品牌</div>';
       html += '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
       missedPersonal.forEach(d => {
-        html += `<span style="padding:4px 12px;border-radius:12px;font-size:0.8rem;background:var(--personal-bg);color:var(--personal-primary);cursor:pointer;" onclick="navigateToDay(${d})">4/${d}</span>`;
+        html += `<span style="padding:4px 12px;border-radius:12px;font-size:0.8rem;background:var(--personal-bg);color:var(--personal-primary);cursor:pointer;" onclick="navigateToDay(${d})">${CURRENT_MONTH}/${d}</span>`;
       });
       html += '</div></div>';
     }
@@ -2994,9 +3515,10 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById('sec-' + tab.dataset.section).classList.add('active');
     document.getElementById('navTabs').classList.remove('open');
-    if (tab.dataset.section === 'calendar') { renderCalMonthNav(); renderCalendar(); }
+    if (tab.dataset.section === 'calendar') { renderCalMonthNav(); renderCalendar(); initCalendarSwipe(); }
     if (tab.dataset.section === 'summary') renderSummary();
     if (tab.dataset.section === 'goals') renderGoals();
+    if (tab.dataset.section === 'teamcal' && !teamCalLoaded) loadTeamCal('team');
   });
 });
 
@@ -3035,31 +3557,246 @@ function burstParticles(x, y) {
 document.addEventListener('change', (e) => {
   if (e.target.type === 'checkbox' && e.target.checked) {
     const rect = e.target.getBoundingClientRect();
-    burstParticles(rect.left + rect.width / 2, rect.top + rect.height / 2 + window.scrollY);
+    burstParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
   }
 });
 
+// === 團隊行事曆 ===
+const GCAL_BASE = 'https://calendar.google.com/calendar/embed?';
+const GCAL_PARAMS_COMMON = 'ctz=Asia%2FTaipei&wkst=2&showTitle=0&showPrint=0&showCalendars=0&showTz=0&mode=MONTH';
+const GCAL_SOURCES = {
+  all: `src=${encodeURIComponent(CALENDAR_IDS.personal)}&src=${encodeURIComponent(CALENDAR_IDS.zy)}&src=${encodeURIComponent(CALENDAR_IDS.team)}&color=%23E88B7A&color=%235BA8A0&color=%23B8924A`,
+  personal: `src=${encodeURIComponent(CALENDAR_IDS.personal)}&color=%23E88B7A`,
+  zy: `src=${encodeURIComponent(CALENDAR_IDS.zy)}&color=%235BA8A0`,
+  team: `src=${encodeURIComponent(CALENDAR_IDS.team)}&color=%23B8924A`
+};
+let teamCalLoaded = false;
+
+function loadTeamCal(filter) {
+  const f = filter || 'all';
+  const iframe = document.getElementById('teamCalIframe');
+  const link = document.getElementById('teamCalDirectLink');
+  iframe.src = GCAL_BASE + GCAL_PARAMS_COMMON + '&' + GCAL_SOURCES[f];
+  const directBase = 'https://calendar.google.com/calendar/u/0/r';
+  link.href = directBase;
+  teamCalLoaded = true;
+}
+
+function switchTeamCal(filter, btn) {
+  document.querySelectorAll('.teamcal-tab').forEach(t => {
+    t.style.background = 'transparent';
+    t.style.fontWeight = '500';
+  });
+  const colors = {all: 'var(--star-bg)', team: 'var(--star-bg)', personal: 'var(--personal-bg)', zy: 'var(--zy-bg)'};
+  btn.style.background = colors[filter];
+  btn.style.fontWeight = '600';
+  loadTeamCal(filter);
+}
+
 // === 滾動淡入 ===
+let _observedElements = [];
 const scrollObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
+      scrollObserver.unobserve(entry.target);
     }
   });
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
 function initScrollReveal() {
+  // Clean up old observations
+  _observedElements.forEach(el => { try { scrollObserver.unobserve(el); } catch(e) {} });
+  _observedElements = [];
   document.querySelectorAll('.day-card, .section-header, .day-grid-wrap').forEach(el => {
-    el.classList.add('scroll-reveal');
-    scrollObserver.observe(el);
+    if (!el.classList.contains('visible')) {
+      el.classList.add('scroll-reveal');
+      scrollObserver.observe(el);
+      _observedElements.push(el);
+    }
   });
 }
-// Re-init scroll reveal when day changes
-const origShowDay = showDay;
-showDay = function(...args) {
-  origShowDay.apply(this, args);
-  setTimeout(initScrollReveal, 50);
-};
+
+// MutationObserver to auto-init scroll reveal when day content changes
+const _dayContentObserver = new MutationObserver(() => { setTimeout(initScrollReveal, 50); });
+document.addEventListener('DOMContentLoaded', () => {
+  const dc = document.getElementById('dayContent');
+  if (dc) _dayContentObserver.observe(dc, { childList: true });
+});
+// Also trigger on showDay render (dayContent innerHTML change triggers MutationObserver automatically)
+
+// === 自訂時間選擇器（取代原生 select） ===
+function createTimePicker(idPrefix) {
+  const hours = ['--']; for (let i = 0; i < 24; i++) hours.push(String(i).padStart(2,'0'));
+  const mins = ['--','00','05','10','15','20','25','30','35','40','45','50','55'];
+  return `<div class="custom-time-dropdown" onclick="event.stopPropagation()">
+    <button type="button" class="custom-time-btn" id="${idPrefix}_hourBtn" data-target="${idPrefix}_hourMenu" data-input="${idPrefix}_hour" onclick="toggleTimeMenu(this)">--</button>
+    <span class="custom-time-colon">:</span>
+    <button type="button" class="custom-time-btn" id="${idPrefix}_minBtn" data-target="${idPrefix}_minMenu" data-input="${idPrefix}_min" onclick="toggleTimeMenu(this)">--</button>
+    <input type="hidden" id="${idPrefix}_hour" value="">
+    <input type="hidden" id="${idPrefix}_min" value="">
+    <div class="custom-time-menu" id="${idPrefix}_hourMenu">
+      ${hours.map(h => `<div class="custom-time-menu-item" data-value="${h === '--' ? '' : h}" onclick="selectTimeItem(this,'${idPrefix}_hour','${idPrefix}_hourBtn')">${h}</div>`).join('')}
+    </div>
+    <div class="custom-time-menu" id="${idPrefix}_minMenu">
+      ${mins.map(m => `<div class="custom-time-menu-item" data-value="${m === '--' ? '' : m}" onclick="selectTimeItem(this,'${idPrefix}_min','${idPrefix}_minBtn')">${m}</div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function toggleTimeMenu(btn) {
+  const menuId = btn.dataset.target;
+  const menu = document.getElementById(menuId);
+  // Close all other menus first
+  document.querySelectorAll('.custom-time-menu.open').forEach(m => { if (m.id !== menuId) m.classList.remove('open'); });
+  menu.classList.toggle('open');
+  // Scroll to selected
+  const selected = menu.querySelector('.selected');
+  if (selected) selected.scrollIntoView({block:'center'});
+}
+
+function selectTimeItem(item, inputId, btnId) {
+  const value = item.dataset.value;
+  document.getElementById(inputId).value = value;
+  document.getElementById(btnId).textContent = value || '--';
+  // Highlight selected
+  item.parentElement.querySelectorAll('.custom-time-menu-item').forEach(i => i.classList.remove('selected'));
+  item.classList.add('selected');
+  item.parentElement.classList.remove('open');
+}
+
+// Close time menus when clicking outside
+document.addEventListener('click', () => {
+  document.querySelectorAll('.custom-time-menu.open').forEach(m => m.classList.remove('open'));
+});
+
+// Helper: get time value from custom picker
+function getCustomTime(idPrefix) {
+  const h = document.getElementById(idPrefix + '_hour');
+  const m = document.getElementById(idPrefix + '_min');
+  if (h && m && h.value && m.value) return h.value + ':' + m.value;
+  return '';
+}
+
+// === 自訂品牌下拉選單 ===
+function toggleBrandMenu(selectEl) {
+  event.stopPropagation();
+  const menu = selectEl.querySelector('.custom-brand-menu');
+  const wasOpen = menu.classList.contains('open');
+  // Close all brand menus
+  document.querySelectorAll('.custom-brand-menu.open').forEach(m => m.classList.remove('open'));
+  document.querySelectorAll('.custom-brand-select.open').forEach(s => s.classList.remove('open'));
+  if (!wasOpen) {
+    menu.classList.add('open');
+    selectEl.classList.add('open');
+  }
+}
+
+function selectBrand(item) {
+  event.stopPropagation();
+  const selectEl = item.closest('.custom-brand-select');
+  const value = item.dataset.value;
+  selectEl.dataset.value = value;
+  selectEl.querySelector('.brand-label').textContent = item.textContent.trim();
+  const brandColors = {star:'var(--star-primary)', zy:'var(--zy-primary)', personal:'var(--personal-primary)', life:'var(--life-primary)'};
+  selectEl.querySelector('.brand-dot').style.background = brandColors[value] || 'var(--star-primary)';
+  // Highlight selected
+  selectEl.querySelectorAll('.custom-brand-menu-item').forEach(i => i.classList.remove('selected'));
+  item.classList.add('selected');
+  // Close menu
+  selectEl.querySelector('.custom-brand-menu').classList.remove('open');
+  selectEl.classList.remove('open');
+}
+
+// Close brand menus when clicking outside
+document.addEventListener('click', () => {
+  document.querySelectorAll('.custom-brand-menu.open').forEach(m => m.classList.remove('open'));
+  document.querySelectorAll('.custom-brand-select.open').forEach(s => s.classList.remove('open'));
+});
+
+// === 觸控滑動切換月份 ===
+function initSwipe(container, onSwipeLeft, onSwipeRight) {
+  let startX = 0, startY = 0, isSwiping = false;
+  container.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isSwiping = true;
+  }, {passive: true});
+  container.addEventListener('touchend', (e) => {
+    if (!isSwiping) return;
+    isSwiping = false;
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+    const dx = endX - startX;
+    const dy = endY - startY;
+    // Only trigger if horizontal swipe > 60px and more horizontal than vertical
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx < 0) onSwipeLeft();   // swipe left = next month
+      else onSwipeRight();          // swipe right = prev month
+    }
+  }, {passive: true});
+}
+
+// Attach swipe to calendar section
+function initCalendarSwipe() {
+  const calContainer = document.querySelector('#sec-calendar .calendar-container');
+  if (calContainer && !calContainer._swipeInit) {
+    initSwipe(calContainer,
+      () => { if (selectedCalMonth < 12) { selectedCalMonth++; loadCalendarEvents(selectedCalMonth); renderCalMonthNav(); renderCalendar(); } },
+      () => { if (selectedCalMonth > 1) { selectedCalMonth--; loadCalendarEvents(selectedCalMonth); renderCalMonthNav(); renderCalendar(); } }
+    );
+    calContainer._swipeInit = true;
+  }
+}
+
+// Attach swipe to daily task section
+function initDailySwipe() {
+  const dayContainer = document.getElementById('dayContent');
+  if (dayContainer && !dayContainer._swipeInit) {
+    initSwipe(dayContainer,
+      () => {
+        if (selectedDayMonth < 12) {
+          selectedDayMonth++;
+          loadCalendarEvents(selectedDayMonth);
+          renderDaySelector();
+          showDay(selectedDayMonth === CURRENT_MONTH ? TODAY : 1, selectedDayMonth);
+        }
+      },
+      () => {
+        if (selectedDayMonth > 1) {
+          selectedDayMonth--;
+          loadCalendarEvents(selectedDayMonth);
+          renderDaySelector();
+          showDay(selectedDayMonth === CURRENT_MONTH ? TODAY : 1, selectedDayMonth);
+        }
+      }
+    );
+    dayContainer._swipeInit = true;
+  }
+  // Also attach to day selector
+  const daySelector = document.getElementById('daySelector');
+  if (daySelector && !daySelector._swipeInit) {
+    initSwipe(daySelector,
+      () => {
+        if (selectedDayMonth < 12) {
+          selectedDayMonth++;
+          loadCalendarEvents(selectedDayMonth);
+          renderDaySelector();
+          showDay(selectedDayMonth === CURRENT_MONTH ? TODAY : 1, selectedDayMonth);
+        }
+      },
+      () => {
+        if (selectedDayMonth > 1) {
+          selectedDayMonth--;
+          loadCalendarEvents(selectedDayMonth);
+          renderDaySelector();
+          showDay(selectedDayMonth === CURRENT_MONTH ? TODAY : 1, selectedDayMonth);
+        }
+      }
+    );
+    daySelector._swipeInit = true;
+  }
+}
 
 // === 密碼鎖畫面 ===
 function showLockScreen() {
@@ -3099,6 +3836,8 @@ function skipToTeam() {}
   await fetchSheetData();
   renderSummary();
   initScrollReveal();
+  initCalendarSwipe();
+  initDailySwipe();
 })();
 setInterval(fetchSheetData, 5 * 60 * 1000);
 </script>
