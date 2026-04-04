@@ -1125,7 +1125,7 @@ select option {
              radial-gradient(ellipse 50% 35% at 10% 95%,rgba(220,190,150,.15) 0%,transparent 50%);
 }
 .lock-inner { text-align:center;padding:48px 36px;max-width:360px;width:100%;position:relative;z-index:1; }
-.lock-star { font-size:0.7rem;color:rgba(184,146,74,0.4);letter-spacing:0.6em;margin-bottom:20px; }
+.lock-star { font-size:0.35rem;color:rgba(184,146,74,0.35);letter-spacing:1em;margin-bottom:20px; }
 .lock-title { font-family:'Noto Serif TC',serif;font-size:1.4rem;font-weight:600;color:#3A2A14;margin-bottom:6px;letter-spacing:0.08em; }
 .lock-subtitle { font-size:0.8rem;color:#9B8B78;margin-bottom:32px;letter-spacing:0.06em; }
 .lock-input {
@@ -2006,6 +2006,9 @@ function addLifeTodo(day, month) {
   localStorage.setItem('lifeTodos', JSON.stringify(lifeTodos));
   syncToCloud('lifeTodos', lifeTodos);
   syncToCalendar(text, 'life', m, day, time);
+  if (GOOGLE_FORM_URL) {
+    syncToGoogleForm({date: `2026/${m}/${day}`, task: text, brand: 'life', note: note, time: time});
+  }
   showDay(day, m);
 }
 
@@ -2036,7 +2039,7 @@ function editLifeTodoNote(dayKey, index, day, month) {
 
 // === CUSTOM TASKS ===
 // Google Forms URL for schedule sync (set your form URL here)
-const GOOGLE_FORM_URL = '';
+const GOOGLE_FORM_URL = APPS_SCRIPT_URL;
 
 function addCustomTask(day, month) {
   const key = month + '_' + day;
@@ -2058,10 +2061,6 @@ function addCustomTask(day, month) {
   if (GOOGLE_FORM_URL) {
     syncToGoogleForm({date: `2026/${month}/${day}`, task: text, brand: brand, note: note, time: time});
   }
-  input.value = '';
-  if (noteEl) noteEl.value = '';
-  if (hourEl) hourEl.value = '';
-  if (minEl) minEl.value = '';
   showDay(day, month);
 }
 
@@ -3075,7 +3074,7 @@ function showDay(day, month) {
         </div>
       </div>
       <input type="text" class="life-input" id="customTaskInput_${ctKey}" placeholder="輸入任務內容..." onkeydown="if(event.key==='Enter')addCustomTask(${day},${month})" style="flex:1;border-color:rgba(184,146,74,0.25);">
-      <button class="life-add-btn" onclick="addCustomTask(${day},${month})">+</button>
+      <button class="life-add-btn" onclick="addCustomTask(${day},${month})" style="background:var(--star-primary);">+</button>
     </div>
     <div style="display:flex;gap:8px;align-items:center;">
       ${createTimePicker('customTask_' + ctKey)}
