@@ -1874,8 +1874,9 @@ function getDayTotal(day) {
   if (typeof t === 'number') return t;
   return (t.zy||0) + (t.personal||0) + (t.star||0);
 }
-function getTaskTimeTotal(day) {
+function getTaskTimeTotal(day, month) {
   let total = 0;
+  const m = month || selectedDayMonth || CURRENT_MONTH;
   const prefix = 'time_' + day + '_';
   for (const k in taskNotes) {
     if (k.startsWith(prefix)) {
@@ -1883,14 +1884,16 @@ function getTaskTimeTotal(day) {
       if (!isNaN(v)) total += v;
     }
   }
-  // Include custom task durations
-  for (const dayKey in customTasks) {
-    if (dayKey.endsWith('_' + day)) {
-      (customTasks[dayKey] || []).forEach(ct => {
-        if (ct.duration) total += ct.duration;
-      });
-    }
-  }
+  // Include custom task durations + manual minutes
+  const ctKey = m + '_' + day;
+  (customTasks[ctKey] || []).forEach(ct => {
+    if (ct.duration) total += ct.duration;
+    if (ct.manualMin) total += ct.manualMin;
+  });
+  // Include life todo durations
+  (lifeTodos[ctKey] || []).forEach(lt => {
+    if (lt.manualMin) total += lt.manualMin;
+  });
   return total;
 }
 
@@ -1993,13 +1996,35 @@ function saveNote(key, value) {
     const dayMatch = key.match(/^time_(\d+)_/);
     if (dayMatch) {
       const day = parseInt(dayMatch[1]);
-      const taskTotal = getTaskTimeTotal(day);
-      const el = document.getElementById('taskTimeTotalDisplay');
-      if (el) {
-        const h = Math.floor(taskTotal / 60), m = taskTotal % 60;
-        el.textContent = taskTotal >= 60 ? (h + 'h ' + (m > 0 ? m + 'min' : '')) : (taskTotal + ' min');
-      }
+      updateTimeTotalDisplay(day);
     }
+  }
+}
+
+function saveCustomTaskMin(month, day, index, value) {
+  const key = month + '_' + day;
+  if (!customTasks[key] || !customTasks[key][index]) return;
+  customTasks[key][index].manualMin = parseInt(value) || 0;
+  localStorage.setItem('customTasks', JSON.stringify(customTasks));
+  syncToCloud('customTasks', customTasks);
+  updateTimeTotalDisplay(day, month);
+}
+
+function saveLifeTodoMin(month, day, index, value) {
+  const key = month + '_' + day;
+  if (!lifeTodos[key] || !lifeTodos[key][index]) return;
+  lifeTodos[key][index].manualMin = parseInt(value) || 0;
+  localStorage.setItem('lifeTodos', JSON.stringify(lifeTodos));
+  syncToCloud('lifeTodos', lifeTodos);
+  updateTimeTotalDisplay(day, month);
+}
+
+function updateTimeTotalDisplay(day, month) {
+  const taskTotal = getTaskTimeTotal(day, month);
+  const el = document.getElementById('taskTimeTotalDisplay');
+  if (el) {
+    const h = Math.floor(taskTotal / 60), m = taskTotal % 60;
+    el.textContent = taskTotal >= 60 ? (h + 'h ' + (m > 0 ? m + 'min' : '')) : (taskTotal + ' min');
   }
 }
 
@@ -2047,6 +2072,13 @@ function editLifeTodoNote(dayKey, index, day, month) {
     syncToCloud('lifeTodos', lifeTodos);
     showDay(day, month);
   });
+}
+
+function editLifeTodoNoteInline(dayKey, index, value) {
+  if (!lifeTodos[dayKey] || !lifeTodos[dayKey][index]) return;
+  lifeTodos[dayKey][index].note = value;
+  localStorage.setItem('lifeTodos', JSON.stringify(lifeTodos));
+  syncToCloud('lifeTodos', lifeTodos);
 }
 
 // === CUSTOM TASKS ===
@@ -2107,6 +2139,14 @@ function editCustomTaskNote(day, month, index) {
     syncToCloud('customTasks', customTasks);
     showDay(day, month);
   });
+}
+
+function editCustomTaskNoteInline(month, day, index, value) {
+  const key = month + '_' + day;
+  if (!customTasks[key] || !customTasks[key][index]) return;
+  customTasks[key][index].note = value;
+  localStorage.setItem('customTasks', JSON.stringify(customTasks));
+  syncToCloud('customTasks', customTasks);
 }
 
 function toggleCustomTask(day, month, index) {
@@ -3117,16 +3157,21 @@ function showDay(day, month) {
       if (ct.brand !== brand) return;
       if (viewMode === 'zy' && brand !== 'zy' && brand !== 'star') return;
       if (viewMode === 'private' && brand === 'zy') return;
+      const ctNote = ct.note || '';
+      const ctManualMin = ct.manualMin || '';
       h += `<div class="task-check-wrap" style="display:flex;align-items:flex-start;">
         <label class="task-check${ct.done ? ' done' : ''}" style="flex:1;">
           <input type="checkbox" ${ct.done ? 'checked' : ''} onchange="toggleCustomTask(${day},${month},${realIdx});this.closest('.task-check').classList.toggle('done',this.checked)">
           <span class="task-check-label">
             ${ct.time ? '<span style="color:var(--star-primary);font-size:0.75rem;font-weight:600;margin-right:6px;font-family:EB Garamond,serif;">' + escapeHtml(ct.time) + (ct.endTime ? '-' + escapeHtml(ct.endTime) : '') + '</span>' : ''}${escapeHtml(ct.text)}${ct.duration ? '<span style="color:var(--text-light);font-size:0.68rem;margin-left:6px;font-family:EB Garamond,serif;">' + ct.duration + 'min</span>' : ''}
-            ${ct.note ? '<div style="font-size:0.72rem;color:var(--text-light);margin-top:3px;padding-left:2px;line-height:1.5;">' + escapeHtml(ct.note) + '</div>' : ''}
           </span>
         </label>
-        <button onclick="editCustomTaskNote(${day},${month},${realIdx})" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:0.8rem;padding:8px 10px;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'" title="編輯備註">📝</button>
         <button onclick="if(confirm('確定刪除這個任務？'))removeCustomTask(${day},${month},${realIdx})" style="background:none;border:none;color:#D32F2F;cursor:pointer;font-size:1rem;padding:8px 12px;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'" title="刪除任務">&times;</button>
+      </div>
+      <div class="task-meta">
+        <input type="number" class="task-time-input" min="0" max="480" value="${ctManualMin}" placeholder="0" onchange="saveCustomTaskMin(${month},${day},${realIdx},this.value)">
+        <span class="task-time-label">分鐘</span>
+        <textarea class="task-note" placeholder="備註..." rows="1" oninput="editCustomTaskNoteInline(${month},${day},${realIdx},this.value);this.style.height='auto';this.style.height=this.scrollHeight+'px';">${escapeHtml(ctNote)}</textarea>
       </div>`;
     });
     return h;
@@ -3294,14 +3339,20 @@ function showDay(day, month) {
   </div>`;
   if (todos.length > 0) {
     todos.forEach((todo, i) => {
+      const ltNote = todo.note || '';
+      const ltManualMin = todo.manualMin || '';
       html += `<div class="task-check-wrap" style="display:flex;align-items:flex-start;">
         <label class="task-check${todo.done ? ' done' : ''}" style="flex:1;">
           <input type="checkbox" class="life-accent" ${todo.done ? 'checked' : ''} onchange="toggleLifeTodo('${dayKey}',${i});this.closest('.task-check').classList.toggle('done',this.checked)">
           <span class="task-check-label">${todo.time ? '<span style="font-family:EB Garamond,serif;font-size:0.78rem;color:#3A2A14;margin-right:6px;">'+escapeHtml(todo.time)+'</span>' : ''}${escapeHtml(todo.text)}</span>
         </label>
-        <button onclick="editLifeTodoNote('${dayKey}',${i},${day},${m})" style="background:none;border:none;color:var(--life-primary);cursor:pointer;font-size:0.8rem;padding:8px 10px;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;opacity:0.6;" title="編輯備註">📝</button>
         <button onclick="removeLifeTodo('${dayKey}',${i},${day},${m})" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:1rem;padding:8px 12px;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;opacity:0.5;">&times;</button>
-      </div>${todo.note ? '<div style="margin-left:32px;margin-bottom:6px;font-size:0.72rem;color:var(--text-light);line-height:1.5;">📝 '+escapeHtml(todo.note)+'</div>' : ''}`;
+      </div>
+      <div class="task-meta">
+        <input type="number" class="task-time-input" min="0" max="480" value="${ltManualMin}" placeholder="0" onchange="saveLifeTodoMin(${m},${day},${i},this.value)">
+        <span class="task-time-label">分鐘</span>
+        <textarea class="task-note" placeholder="備註..." rows="1" oninput="editLifeTodoNoteInline('${dayKey}',${i},this.value);this.style.height='auto';this.style.height=this.scrollHeight+'px';">${escapeHtml(ltNote)}</textarea>
+      </div>`;
     });
   }
   html += renderCustomTasksForBrand('life');
@@ -3309,7 +3360,7 @@ function showDay(day, month) {
   } // end if viewMode !== 'zy'
 
   // === 今日時間總計（自動從任務分鐘匯總）===
-  const taskTimeTotal = getTaskTimeTotal(day);
+  const taskTimeTotal = getTaskTimeTotal(day, m);
   const ttHours = Math.floor(taskTimeTotal / 60);
   const ttMins = taskTimeTotal % 60;
   const ttDisplay = taskTimeTotal >= 60 ? (ttHours + 'h ' + (ttMins > 0 ? ttMins + 'min' : '')) : (taskTimeTotal + ' min');
