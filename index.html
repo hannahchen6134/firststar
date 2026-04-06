@@ -1892,6 +1892,7 @@ function getTaskTimeTotal(day, month) {
   });
   // Include life todo durations
   (lifeTodos[ctKey] || []).forEach(lt => {
+    if (lt.duration) total += lt.duration;
     if (lt.manualMin) total += lt.manualMin;
   });
   return total;
@@ -2036,15 +2037,17 @@ function addLifeTodo(day, month) {
   if (!input || !input.value.trim()) return;
   const text = input.value.trim();
   const noteEl = document.getElementById('lifeNote_' + dayKey);
-  const time = getCustomTime('life_' + dayKey);
+  const startTime = getCustomTime('lifeStart_' + dayKey);
+  const endTime = getCustomTime('lifeEnd_' + dayKey);
+  const duration = calcDuration(startTime, endTime);
   const note = noteEl ? noteEl.value.trim() : '';
   if (!lifeTodos[dayKey]) lifeTodos[dayKey] = [];
-  lifeTodos[dayKey].push({text, done: false, time: time, note: note});
+  lifeTodos[dayKey].push({text, done: false, time: startTime, endTime: endTime, duration: duration, note: note});
   localStorage.setItem('lifeTodos', JSON.stringify(lifeTodos));
   syncToCloud('lifeTodos', lifeTodos);
-  syncToCalendar(text, 'life', m, day, time);
+  syncToCalendar(text, 'life', m, day, startTime, duration);
   if (GOOGLE_FORM_URL) {
-    syncToGoogleForm({date: `2026/${m}/${day}`, task: text, brand: 'life', note: note, time: time});
+    syncToGoogleForm({date: `2026/${m}/${day}`, task: text, brand: 'life', note: note, time: startTime, duration: duration});
   }
   showDay(day, m);
 }
@@ -3333,24 +3336,28 @@ function showDay(day, month) {
     <input type="text" class="life-input" id="lifeInput_${dayKey}" placeholder="新增..." onkeydown="if(event.key==='Enter')addLifeTodo(${day},${m})">
     <button class="life-add-btn" onclick="addLifeTodo(${day},${m})">+</button>
   </div>
-  <div style="display:flex;gap:8px;align-items:center;margin-top:6px;margin-bottom:10px;">
-    ${createTimePicker('life_' + dayKey)}
-    <input type="text" class="life-input" id="lifeNote_${dayKey}" placeholder="備註（選填）..." style="flex:1;border-color:rgba(130,160,190,0.25);font-size:0.8rem;padding:8px 14px;">
+  <div style="display:flex;gap:6px;align-items:center;margin-top:6px;margin-bottom:10px;flex-wrap:wrap;">
+    ${createTimePicker('lifeStart_' + dayKey)}
+    <span style="color:var(--text-light);font-size:0.75rem;">-</span>
+    ${createTimePicker('lifeEnd_' + dayKey)}
+    <span id="lifeDurLabel_${dayKey}" style="font-family:'EB Garamond',serif;font-size:0.75rem;color:var(--life-primary);min-width:36px;"></span>
+    <input type="text" class="life-input" id="lifeNote_${dayKey}" placeholder="備註（選填）..." style="flex:1;min-width:80px;border-color:rgba(130,160,190,0.25);font-size:0.78rem;padding:7px 12px;">
   </div>`;
   if (todos.length > 0) {
     todos.forEach((todo, i) => {
       const ltNote = todo.note || '';
-      const ltManualMin = todo.manualMin || '';
+      const ltTimeDisplay = todo.time ? (todo.time + (todo.endTime ? '-' + todo.endTime : '')) : '';
+      const ltDurDisplay = todo.duration ? todo.duration + 'min' : '';
       html += `<div class="task-check-wrap" style="display:flex;align-items:flex-start;">
         <label class="task-check${todo.done ? ' done' : ''}" style="flex:1;">
           <input type="checkbox" class="life-accent" ${todo.done ? 'checked' : ''} onchange="toggleLifeTodo('${dayKey}',${i});this.closest('.task-check').classList.toggle('done',this.checked)">
-          <span class="task-check-label">${todo.time ? '<span style="font-family:EB Garamond,serif;font-size:0.78rem;color:#3A2A14;margin-right:6px;">'+escapeHtml(todo.time)+'</span>' : ''}${escapeHtml(todo.text)}</span>
+          <span class="task-check-label">
+            ${ltTimeDisplay ? '<span style="color:var(--life-primary);font-size:0.75rem;font-weight:600;margin-right:6px;font-family:EB Garamond,serif;">' + escapeHtml(ltTimeDisplay) + '</span>' : ''}${escapeHtml(todo.text)}${ltDurDisplay ? '<span style="color:var(--text-light);font-size:0.68rem;margin-left:6px;font-family:EB Garamond,serif;">' + ltDurDisplay + '</span>' : ''}
+          </span>
         </label>
         <button onclick="removeLifeTodo('${dayKey}',${i},${day},${m})" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:1rem;padding:8px 12px;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;opacity:0.5;">&times;</button>
       </div>
       <div class="task-meta">
-        <input type="number" class="task-time-input" min="0" max="480" value="${ltManualMin}" placeholder="0" onchange="saveLifeTodoMin(${m},${day},${i},this.value)">
-        <span class="task-time-label">分鐘</span>
         <textarea class="task-note" placeholder="備註..." rows="1" oninput="editLifeTodoNoteInline('${dayKey}',${i},this.value);this.style.height='auto';this.style.height=this.scrollHeight+'px';">${escapeHtml(ltNote)}</textarea>
       </div>`;
     });
@@ -3749,6 +3756,21 @@ function selectTimeItem(item, inputId, btnId) {
     const s = getCustomTime('customTaskStart_' + dayKey);
     const e = getCustomTime('customTaskEnd_' + dayKey);
     const label = document.getElementById('customTaskDurLabel_' + dayKey);
+    if (label) {
+      const dur = calcDuration(s, e);
+      if (dur > 0) {
+        const h = Math.floor(dur / 60), m = dur % 60;
+        label.textContent = dur >= 60 ? h + 'h' + (m > 0 ? m + 'm' : '') : dur + 'min';
+      } else { label.textContent = ''; }
+    }
+  }
+  // Auto-calc duration preview for life todo time pickers
+  const lifeMatch = inputId.match(/^life(Start|End)_(.+?)_(hour|min)$/);
+  if (lifeMatch) {
+    const dayKey = lifeMatch[2];
+    const s = getCustomTime('lifeStart_' + dayKey);
+    const e = getCustomTime('lifeEnd_' + dayKey);
+    const label = document.getElementById('lifeDurLabel_' + dayKey);
     if (label) {
       const dur = calcDuration(s, e);
       if (dur > 0) {
